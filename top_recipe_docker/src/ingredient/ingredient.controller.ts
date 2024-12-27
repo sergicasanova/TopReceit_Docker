@@ -22,7 +22,7 @@ export class IngredientController {
     return await this.ingredientService.getAllIngredients();
   }
   @Post()
-  async createInventari(@Body() ingredientDto: IngredientDto) {
+  async createIngredient(@Body() ingredientDto: IngredientDto) {
     return await this.ingredientService.createIngredient(ingredientDto);
   }
 

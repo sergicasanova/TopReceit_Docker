@@ -1,16 +1,15 @@
 services:
   web_server:
-    build: .
+    build: ./top_recipe_docker
     ports:
       - ${WEB_SERVER_PORT}:3000
     depends_on:
       - database
-      #- redis
     container_name: toprecipe-webserver
     working_dir: /web
     command: pm2-runtime start pm2.json
     volumes:
-      - ./toprecipe:/pm2.json
+      - ./top_recipe_docker:/web
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
@@ -29,7 +28,7 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - TZ=UTC
     volumes:
-     - ./data/db/mysql:/var/lib/mysql
+     - ./topreceit/data/db/mysql:/var/lib/mysql
 
 # networks:
     #   - app-network
