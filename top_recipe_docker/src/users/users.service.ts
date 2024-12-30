@@ -12,7 +12,7 @@ export class UserService {
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const { id, email, username, role, preferences, avatar } = createUserDto;
+    const { id, email, username } = createUserDto;
 
     const existingUser = await this.userRepository.findOne({ where: { id } });
     if (existingUser) {
@@ -23,9 +23,6 @@ export class UserService {
       id,
       email,
       username,
-      role: role ?? 2,
-      preferences: preferences ?? [],
-      avatar,
     });
 
     return await this.userRepository.save(newUser);

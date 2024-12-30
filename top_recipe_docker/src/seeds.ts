@@ -8,7 +8,7 @@ config();
 
 const options: DataSourceOptions & SeederOptions = {
   type: 'mariadb',
-  host: 'topreceit-db',
+  host: 'database',
   port: 3306,
   username: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,

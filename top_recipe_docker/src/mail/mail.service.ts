@@ -16,7 +16,7 @@ export class MailService {
       template: './confirmation', // `.hbs` extension is appended automatically
       context: {
         // ✏️ filling curly brackets with content
-        name: user.name,
+        name: user.username,
         url,
       },
     });

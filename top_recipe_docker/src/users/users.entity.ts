@@ -12,14 +12,20 @@ export class User {
   @Column()
   username: string;
 
-  @Column({ default: 2 })
-  role: number;
-
-  @Column('simple-array', { nullable: true })
-  preferences: string[];
+  @Column({ type: 'timestamp', nullable: true })
+  tokenExpiration: Date;
 
   @Column({ nullable: true })
-  avatar: string;
+  token: string;
+
+  // @Column({ default: 2 })
+  // role: number;
+
+  // @Column('simple-array', { nullable: true })
+  // preferences: string[];
+
+  // @Column({ nullable: true })
+  // avatar: string;
 
   @OneToMany(() => Recipe, (recipe) => recipe.user)
   recipes: Recipe[];

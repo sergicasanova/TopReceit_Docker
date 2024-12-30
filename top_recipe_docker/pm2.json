@@ -1,5 +1,5 @@
 {
-    "name": "top_recipe_docker",
+    "name": "toprecipe",
     "script": "npm i && npm run start:dev",
     "instances": "1",
     "env": {

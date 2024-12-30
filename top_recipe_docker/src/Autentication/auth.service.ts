@@ -11,12 +11,12 @@ export class AuthService {
     private userRepository: Repository<User>,
   ) {}
 
-  async generateToken(id_user: number): Promise<string> {
+  async generateToken(id: number): Promise<string> {
     const token = uuidv4();
     const expirationDate = new Date();
-    expirationDate.setHours(expirationDate.getHours() + 1);
+    expirationDate.setHours(expirationDate.getMonth() + 1);
 
-    await this.userRepository.update(id_user, {
+    await this.userRepository.update(id, {
       token,
       tokenExpiration: expirationDate,
     });
@@ -25,12 +25,12 @@ export class AuthService {
   }
 
   async validateToken(token: string): Promise<boolean> {
-    const user = await this.userRepository.findOne({ where: { token } });
-    if (!user) return false;
+    const UserEntity = await this.userRepository.findOne({ where: { token } });
+    if (!UserEntity) return false;
 
     const now = new Date();
-    if (user.tokenExpiration < now) {
-      await this.userRepository.update(user.id_user, {
+    if (UserEntity.tokenExpiration < now) {
+      await this.userRepository.update(UserEntity.id, {
         token: null,
         tokenExpiration: null,
       });
@@ -40,8 +40,8 @@ export class AuthService {
     return true;
   }
 
-  async clearToken(id_user: number): Promise<void> {
-    await this.userRepository.update(id_user, {
+  async clearToken(id: number): Promise<void> {
+    await this.userRepository.update(id, {
       token: null,
       tokenExpiration: null,
     });

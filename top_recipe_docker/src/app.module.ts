@@ -1,39 +1,36 @@
 import {
-  // MiddlewareConsumer,
+  MiddlewareConsumer,
   Module,
   NestModule,
-  // RequestMethod,
+  RequestMethod,
 } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from './users/users.entity';
-// import { AuthorizationMiddleware } from './authorization.middleware';
-// import { AuthService } from './Autentication/auth.service';
+import { AuthorizationMiddleware } from './authorization.middleware';
+import { AuthService } from './Autentication/auth.service';
 import { MailModule } from './mail/mail.module';
-// import { MongooseModule } from '@nestjs/mongoose';
+import { MongooseModule } from '@nestjs/mongoose';
 import { Steps } from './steps/steps.entity';
 import { Recipe } from './recipe/recipe.entity';
 import { RecipeIngredient } from './recipe_ingredient/recipe_ingredient.entity';
 import { StepsModule } from './steps/steps.module';
 import { RecipeIngredientModule } from './recipe_ingredient/recipe_ingredient.module';
 import { RecipeModule } from './recipe/recipe.module';
+import { IngredientEntity } from './ingredient/ingredient.entity';
+import { IngredientModule } from './ingredient/ingredient.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    // MongooseModule.forRootAsync({
-    //   imports: [ConfigModule],
-    //   useFactory: async (configService: ConfigService) => ({
-    //     uri: configService.get<string>('MONGODB_URI'),
-    //   }),
-    //   inject: [ConfigService],
-    // }),
-    RecipeModule,
-    RecipeIngredientModule,
-    StepsModule,
-    UsersModule,
-    MailModule,
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGODB_URI'),
+      }),
+      inject: [ConfigService],
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -47,31 +44,26 @@ import { RecipeModule } from './recipe/recipe.module';
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),
         database: configService.get('MYSQL_DATABASE'),
-        entities: [
-          Recipe,
-          User,
-          Steps,
-          Recipe,
-          RecipeIngredient,
-          RecipeIngredient,
-        ],
+        entities: [Recipe, User, Steps, RecipeIngredient, IngredientEntity],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
+    RecipeModule,
+    RecipeIngredientModule,
+    StepsModule,
+    UsersModule,
+    MailModule,
+    IngredientModule,
   ],
   controllers: [],
-  providers: [
-    // AuthorizationMiddleware,
-    // AuthService,
-  ],
+  providers: [AuthorizationMiddleware, AuthService],
 })
 export class AppModule implements NestModule {
-  configure() {
-    // consumer: MiddlewareConsumer
-    // consumer
-    //   .apply(AuthorizationMiddleware)
-    //   .exclude({ path: 'users/login', method: RequestMethod.POST })
-    //   .forRoutes('*');
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthorizationMiddleware)
+      .exclude({ path: 'users/login', method: RequestMethod.POST })
+      .forRoutes('*');
   }
 }

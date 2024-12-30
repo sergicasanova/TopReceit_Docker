@@ -11,24 +11,21 @@ services:
     volumes:
       - ./top_recipe_docker:/web
     environment:
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - TZ=Europe/Berlin
 
   database:
     image: yobasystems/alpine-mariadb:10.11.8
     container_name: toprecipe-db
     ports:
       - "2222:3306"
-    #restart: always
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - TZ=UTC
+      - TZ=Europe/Berlin
     volumes:
-     - ./topreceit/data/db/mysql:/var/lib/mysql
+      - ./top_recipe_docker/data/db/mysql:/var/lib/mysql
 
 # networks:
     #   - app-network
