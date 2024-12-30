@@ -7,7 +7,7 @@ services:
       - database
     container_name: toprecipe-webserver
     working_dir: /web
-    command: pm2-runtime start pm2.json
+    command: npm run start:dev
     volumes:
       - ./top_recipe_docker:/web
     environment:
