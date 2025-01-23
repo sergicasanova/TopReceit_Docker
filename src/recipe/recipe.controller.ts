@@ -7,41 +7,23 @@ import {
   Param,
   Body,
   Delete,
-  UseInterceptors,
-  UploadedFile,
 } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto, UpdateRecipeDto } from './recipe.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import * as path from 'path';
-import { diskStorage } from 'multer';
 
 @Controller('recipe')
 export class RecipeController {
   constructor(private readonly recipeService: RecipeService) {}
-  @Post()
-  @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, callback) => {
-          const fileName =
-            path.parse(file.originalname).name.replace(/\s/g, '') +
-            '-' +
-            Date.now() +
-            path.extname(file.originalname);
-          callback(null, fileName);
-        },
-      }),
-    }),
-  )
-  async create(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() createRecipeDto: CreateRecipeDto,
-  ) {
-    const image = file ? file.filename : null;
 
-    return this.recipeService.createRecipe(createRecipeDto, image);
+  @Post()
+  async create(@Body() createRecipeDto: CreateRecipeDto) {
+    const { title, description, user_id, image } = createRecipeDto;
+    return this.recipeService.createRecipe({
+      title,
+      description,
+      user_id,
+      image,
+    });
   }
 
   @Put(':id')
@@ -63,8 +45,13 @@ export class RecipeController {
   }
 
   @Get('user/:userId')
-  async getRecipesByUser(@Param('userId') userId: string) {
-    return this.recipeService.getRecipesByUserId(userId);
+  async getRecipesByUserId(@Param('userId') userId: string) {
+    const recipes = await this.recipeService.getRecipesByUserId(userId);
+
+    return recipes.map((recipe) => ({
+      ...recipe,
+      user: { id_user: recipe.user.id_user },
+    }));
   }
 
   @Get(':id')

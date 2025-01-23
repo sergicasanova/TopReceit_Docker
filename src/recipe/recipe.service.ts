@@ -11,11 +11,8 @@ export class RecipeService {
     private readonly recipeRepository: Repository<Recipe>,
   ) {}
 
-  async createRecipe(
-    createRecipeDto: CreateRecipeDto,
-    image: string,
-  ): Promise<Recipe> {
-    const { title, description, user_id } = createRecipeDto;
+  async createRecipe(createRecipeDto: CreateRecipeDto): Promise<Recipe> {
+    const { title, description, user_id, image } = createRecipeDto;
 
     const user = { id_user: user_id };
 
@@ -49,12 +46,7 @@ export class RecipeService {
       relations: ['recipeIngredients', 'steps'],
     });
 
-    return recipes.map((recipe) => {
-      if (recipe.image) {
-        recipe.image = `http://localhost:3000/uploads/${recipe.image}`;
-      }
-      return recipe;
-    });
+    return recipes;
   }
 
   async searchRecipesByTitle(title: string): Promise<Recipe[]> {
@@ -68,16 +60,10 @@ export class RecipeService {
   async getRecipesByUserId(userId: string): Promise<Recipe[]> {
     const recipes = await this.recipeRepository.find({
       where: { user: { id_user: userId } },
-      relations: ['recipeIngredients', 'steps'],
+      relations: ['recipeIngredients', 'steps', 'user'],
     });
 
-    // Añadimos la URL completa de la imagen a cada receta
-    return recipes.map((recipe) => {
-      if (recipe.image) {
-        recipe.image = `http://localhost:3000/uploads/${recipe.image}`;
-      }
-      return recipe;
-    });
+    return recipes;
   }
 
   async getRecipeById(id_recipe: number): Promise<Recipe> {

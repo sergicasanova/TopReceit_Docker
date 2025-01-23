@@ -38,6 +38,9 @@ export class CreateRecipeDto {
 }
 
 export class UpdateRecipeDto {
+  @IsString()
+  id_recipe: string;
+
   @IsOptional()
   @IsString()
   title?: string;
@@ -49,6 +52,9 @@ export class UpdateRecipeDto {
   @IsOptional()
   @IsString()
   image?: string;
+
+  @IsString()
+  user_id: string;
 
   @IsOptional()
   @IsArray()

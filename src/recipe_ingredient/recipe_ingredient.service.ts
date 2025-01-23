@@ -80,17 +80,18 @@ export class RecipeIngredientService {
 
   async deleteRecipeIngredient(
     recipeId: number,
-    ingredientId: number,
+    idRecipeIngredient: number,
   ): Promise<void> {
     const ingredient = await this.recipeIngredientRepository.findOne({
       where: {
-        ingredient: { id_ingredient: ingredientId },
-        recipe: { id_recipe: recipeId },
+        id_recipe_ingredient: idRecipeIngredient,
       },
     });
 
+    console.log('Ingredient found:', ingredient);
+
     if (!ingredient) {
-      throw new NotFoundException('Ingrediente no encontrado en esta receta');
+      throw new NotFoundException('Ingrediente no encontrado');
     }
 
     await this.recipeIngredientRepository.remove(ingredient);

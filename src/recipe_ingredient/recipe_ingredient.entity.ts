@@ -29,7 +29,7 @@ export class RecipeIngredient {
   @JoinColumn({ name: 'ingredient_id' })
   ingredient: IngredientEntity;
 
-  @Column('decimal')
+  @Column()
   quantity: number;
 
   @Column()

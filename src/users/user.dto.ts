@@ -8,6 +8,10 @@ import {
 } from 'class-validator';
 
 export class CreateUserDto {
+  @IsOptional()
+  @IsString()
+  id_user: string;
+
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -32,7 +36,7 @@ export class CreateUserDto {
 export class UpdateUserDto {
   @IsOptional()
   @IsString()
-  id?: string;
+  id_user?: string;
 
   @IsOptional()
   @IsEmail()
