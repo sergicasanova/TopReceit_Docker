@@ -9,6 +9,7 @@ import {
 import { User } from '../users/users.entity';
 import { RecipeIngredient } from '../recipe_ingredient/recipe_ingredient.entity';
 import { Steps } from '../steps/steps.entity';
+import { Favorite } from 'src/favorites/favorites.entity';
 
 @Entity('recipe')
 export class Recipe {
@@ -39,4 +40,7 @@ export class Recipe {
 
   @OneToMany(() => Steps, (steps) => steps.recipe, { cascade: true })
   steps: Steps[];
+
+  @OneToMany(() => Favorite, (favorite) => favorite.recipe)
+  favorites: Favorite[];
 }

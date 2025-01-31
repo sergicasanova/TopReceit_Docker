@@ -1,3 +1,4 @@
+import { Favorite } from 'src/favorites/favorites.entity';
 import { Recipe } from '../recipe/recipe.entity';
 import { Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
 
@@ -29,6 +30,9 @@ export class User {
 
   @OneToMany(() => Recipe, (recipe) => recipe.user)
   recipes: Recipe[];
+
+  @OneToMany(() => Favorite, (favorite) => favorite.user)
+  favorites: Favorite[];
 
   // @OneToMany(() => ShoppingList, (shoppingList) => shoppingList.user)
   // shoppingLists: ShoppingList[];

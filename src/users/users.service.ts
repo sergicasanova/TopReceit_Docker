@@ -31,10 +31,15 @@ export class UserService {
   }
 
   async getUserById(id: string): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { id_user: id } });
+    const user = await this.userRepository.findOne({
+      where: { id_user: id },
+      relations: ['favorites', 'favorites.recipe'],
+    });
+
     if (!user) {
       throw new NotFoundException('Usuario no encontrado');
     }
+
     return user;
   }
 

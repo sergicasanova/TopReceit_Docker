@@ -6,6 +6,7 @@ import {
   IsInt,
   IsArray,
 } from 'class-validator';
+import { Favorite } from 'src/favorites/favorites.entity';
 
 export class CreateUserDto {
   @IsOptional()
@@ -53,4 +54,18 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   avatar?: string;
+}
+
+export class UserWithFavoritesDto {
+  @IsString()
+  id_user: string;
+
+  @IsString()
+  email: string;
+
+  @IsString()
+  username: string;
+
+  @IsOptional()
+  favorites: Favorite[];
 }

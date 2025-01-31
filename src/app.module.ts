@@ -18,6 +18,8 @@ import { RecipeIngredientModule } from './recipe_ingredient/recipe_ingredient.mo
 import { StepsModule } from './steps/steps.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import * as path from 'path';
+import { Favorite } from './favorites/favorites.entity';
+import { FavoritesModule } from './favorites/favorites.module';
 
 @Module({
   imports: [
@@ -48,7 +50,14 @@ import * as path from 'path';
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),
         database: configService.get('MYSQL_DATABASE'),
-        entities: [User, Recipe, IngredientEntity, RecipeIngredient, Steps],
+        entities: [
+          User,
+          Recipe,
+          IngredientEntity,
+          RecipeIngredient,
+          Steps,
+          Favorite,
+        ],
         synchronize: true,
       }),
       inject: [ConfigService],
@@ -58,6 +67,7 @@ import * as path from 'path';
     IngredientModule,
     RecipeIngredientModule,
     StepsModule,
+    FavoritesModule,
   ],
   controllers: [],
   providers: [],
