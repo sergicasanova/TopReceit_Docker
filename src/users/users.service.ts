@@ -51,4 +51,19 @@ export class UserService {
       throw new Error('User not found');
     }
   }
+
+  async updateNotificationToken(
+    id: string,
+    tokenNotificacion: string,
+  ): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { id_user: id } });
+
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    user.notification_token = tokenNotificacion;
+
+    return this.userRepository.save(user);
+  }
 }

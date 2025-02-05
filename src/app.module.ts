@@ -20,12 +20,15 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import * as path from 'path';
 import { Favorite } from './favorites/favorites.entity';
 import { FavoritesModule } from './favorites/favorites.module';
+import { Like } from './likes/likes.entity';
+import { LikeModule } from './likes/likes.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, '..', 'uploads'), // Carpeta donde se guardan las imágenes
-      serveRoot: '/uploads', // URL pública para acceder a las imágenes
+      rootPath: path.join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
     }),
     ConfigModule.forRoot(),
     UsersModule,
@@ -40,6 +43,8 @@ import { FavoritesModule } from './favorites/favorites.module';
       IngredientEntity,
       RecipeIngredient,
       Steps,
+      Favorite,
+      Like,
     ]),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -57,6 +62,7 @@ import { FavoritesModule } from './favorites/favorites.module';
           RecipeIngredient,
           Steps,
           Favorite,
+          Like,
         ],
         synchronize: true,
       }),
@@ -68,6 +74,8 @@ import { FavoritesModule } from './favorites/favorites.module';
     RecipeIngredientModule,
     StepsModule,
     FavoritesModule,
+    LikeModule,
+    NotificationModule,
   ],
   controllers: [],
   providers: [],

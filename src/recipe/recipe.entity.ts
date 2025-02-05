@@ -10,6 +10,7 @@ import { User } from '../users/users.entity';
 import { RecipeIngredient } from '../recipe_ingredient/recipe_ingredient.entity';
 import { Steps } from '../steps/steps.entity';
 import { Favorite } from 'src/favorites/favorites.entity';
+import { Like } from 'src/likes/likes.entity';
 
 @Entity('recipe')
 export class Recipe {
@@ -43,4 +44,7 @@ export class Recipe {
 
   @OneToMany(() => Favorite, (favorite) => favorite.recipe)
   favorites: Favorite[];
+
+  @OneToMany(() => Like, (like) => like.recipe)
+  likes: Like[];
 }

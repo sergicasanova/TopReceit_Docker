@@ -7,6 +7,7 @@ import { IngredientEntity } from './ingredient/ingredient.entity';
 import { RecipeIngredient } from './recipe_ingredient/recipe_ingredient.entity';
 import { Steps } from './steps/steps.entity';
 import { Favorite } from './favorites/favorites.entity';
+import { Like } from './likes/likes.entity';
 
 dotenv.config();
 
@@ -17,7 +18,15 @@ const config = {
   username: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
-  entities: [User, Recipe, IngredientEntity, RecipeIngredient, Steps, Favorite],
+  entities: [
+    User,
+    Recipe,
+    IngredientEntity,
+    RecipeIngredient,
+    Steps,
+    Favorite,
+    Like,
+  ],
   migrations: ['./src/migrations/*.ts'],
   synchronize: false,
 };

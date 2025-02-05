@@ -1,16 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Favorite } from './favorites.entity';
+import { Like } from './likes.entity';
 import { NotificationService } from 'src/notification/notification.service';
 import { User } from 'src/users/users.entity';
 import { Recipe } from 'src/recipe/recipe.entity';
-
 @Injectable()
-export class FavoritesService {
+export class LikeService {
   constructor(
-    @InjectRepository(Favorite)
-    private favoriteRepository: Repository<Favorite>,
+    @InjectRepository(Like)
+    private likeRepository: Repository<Like>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(Recipe)
@@ -18,22 +17,24 @@ export class FavoritesService {
     private NotificationService: NotificationService,
   ) {}
 
-  async addFavorite(userId: string, recipeId: number): Promise<Favorite> {
-    const existingFavorite = await this.favoriteRepository.findOne({
+  async giveLike(userId: string, recipeId: number): Promise<Like> {
+    const like = await this.likeRepository.findOne({
       where: { user: { id_user: userId }, recipe: { id_recipe: recipeId } },
+      relations: ['user', 'recipe', 'recipe.user'],
     });
 
-    if (existingFavorite) {
-      throw new Error('Esta receta ya está en tus favoritos');
+    if (like) {
+      throw new Error('Ya has dado like a esta receta');
     }
 
-    const favorite = this.favoriteRepository.create({
+    const newLike = this.likeRepository.create({
       user: { id_user: userId },
       recipe: { id_recipe: recipeId },
     });
 
-    await this.favoriteRepository.save(favorite);
+    await this.likeRepository.save(newLike);
 
+    // Obtener las entidades completas de usuario y receta
     const user = await this.userRepository.findOne({
       where: { id_user: userId },
     });
@@ -50,8 +51,8 @@ export class FavoritesService {
       throw new Error('Receta no encontrada');
     }
 
-    const messageTitle = `Favorito añadido`;
-    const messageBody = `Has añadido la recet: ${recipe.title} a tus favoritos`;
+    const messageTitle = `Nuevo Like`;
+    const messageBody = `${user.username} le ha dado like a la receta "${recipe.title}`;
 
     console.log(messageTitle, messageBody);
 
@@ -68,27 +69,35 @@ export class FavoritesService {
       );
     }
 
-    return favorite;
+    return newLike;
   }
 
-  async removeFavorite(userId: string, recipeId: number): Promise<void> {
-    const favorite = await this.favoriteRepository.findOne({
+  async removeLike(userId: string, recipeId: number): Promise<void> {
+    const like = await this.likeRepository.findOne({
       where: { user: { id_user: userId }, recipe: { id_recipe: recipeId } },
     });
 
-    if (favorite) {
-      await this.favoriteRepository.remove(favorite);
+    if (like) {
+      await this.likeRepository.remove(like);
     } else {
-      throw new Error('Receta no encontrada en favoritos');
+      throw new Error('Like no encontrado');
     }
   }
 
-  async getFavorites(userId: string): Promise<any[]> {
-    const favorites = await this.favoriteRepository.find({
-      where: { user: { id_user: userId } },
-      relations: ['recipe'],
+  async countLikes(recipeId: number): Promise<number> {
+    const likes = await this.likeRepository.find({
+      where: { recipe: { id_recipe: recipeId } },
     });
 
-    return favorites.map((favorite) => favorite.recipe.id_recipe);
+    return likes.length;
+  }
+
+  async getLikes(recipeId: number): Promise<string[]> {
+    const likes = await this.likeRepository.find({
+      where: { recipe: { id_recipe: recipeId } },
+      relations: ['user'],
+    });
+
+    return likes.map((like) => like.user.id_user);
   }
 }

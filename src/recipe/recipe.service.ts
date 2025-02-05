@@ -43,7 +43,7 @@ export class RecipeService {
 
   async getAllRecipes(): Promise<Recipe[]> {
     const recipes = await this.recipeRepository.find({
-      relations: ['recipeIngredients', 'steps'],
+      relations: ['recipeIngredients', 'steps', 'user', 'likes.user'],
     });
 
     return recipes;

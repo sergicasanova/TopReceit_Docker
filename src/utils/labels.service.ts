@@ -2,7 +2,7 @@ import { Injectable, Logger, Res } from '@nestjs/common';
 import * as streamModule from 'stream';
 import { BLANK_PDF } from '@pdfme/common';
 import { generate } from '@pdfme/generator';
-import { text, image, barcodes } from '@pdfme/schemas';
+// import { text, image, barcodes } from '@pdfme/schemas';
 import * as path from 'path';
 import * as fs from 'fs/promises';
 
@@ -233,7 +233,7 @@ export class LabelsService {
       basePdf: BLANK_PDF,
       schemas: templateSchemas,
     };
-    const plugins = { text, image, qrcode: barcodes.qrcode };
+    const plugins = null; // { text, image, qrcode: barcodes.qrcode };
 
     generate({ template, inputs, plugins })
       .then((pdf) => {

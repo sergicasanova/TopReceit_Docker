@@ -1,6 +1,7 @@
 import { Favorite } from 'src/favorites/favorites.entity';
 import { Recipe } from '../recipe/recipe.entity';
 import { Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
+import { Like } from 'src/likes/likes.entity';
 
 @Entity('users')
 export class User {
@@ -28,11 +29,17 @@ export class User {
   @Column({ nullable: true })
   avatar: string;
 
+  @Column({ nullable: true })
+  notification_token: string;
+
   @OneToMany(() => Recipe, (recipe) => recipe.user)
   recipes: Recipe[];
 
   @OneToMany(() => Favorite, (favorite) => favorite.user)
   favorites: Favorite[];
+
+  @OneToMany(() => Like, (like) => like.user)
+  likes: Like[];
 
   // @OneToMany(() => ShoppingList, (shoppingList) => shoppingList.user)
   // shoppingLists: ShoppingList[];

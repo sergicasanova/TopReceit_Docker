@@ -54,6 +54,10 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   avatar?: string;
+
+  @IsOptional()
+  @IsString()
+  notification_token?: string;
 }
 
 export class UserWithFavoritesDto {
