@@ -22,6 +22,58 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+## Pasos para la implementacion del proyecto en local - Workbench
+
+<h1>Paso 1</h1>
+<p>Descargamos el proyecto o bien hacemos un git clone</p>
+
+```bash
+$ npm install
+```
+
+<p>Introducimos en el .env nuestros datos necesarios</p>
+WEB_SERVER_PORT= puerto de nuestro server
+MYSQL_ROOT_PASSWORD= contraseña a eleccion
+MYSQL_DATABASE= el nombre de nuestra base de datos en workbench
+MYSQL_USER= nombre de usuario
+MYSQL_PASSWORD= contraseña del usuario
+MAIL_USER= gmail a eleccion
+MAIL_CLIENT_ID= id cualquiera
+MAIL_PASSWORD= contraseña de nuestro gmail
+ENABLE_TOKEN_VALIDATION=false
+
+# Variables de conexión a MySQL
+MYSQL_HOST= # Cambiar de "mongodb" a "localhost"
+MYSQL_PORT=      # Puerto por defecto para MySQL
+
+# Variables relacionadas con MongoDB eliminadas
+# MONGODB_URI=mongodb://admin:password@mongodb:27017
+# MONGO_INITDB_ROOT_USERNAME=admin
+# MONGO_INITDB_ROOT_PASSWORD=password
+
+# Claves privadas de nuestro firebase
+FIREBASE_PROJECT_ID=
+FIREBASE_CLIENT_EMAIL=
+FIREBASE_PRIVATE_KEY=
+
+<h1>Paso 2: Crear la base de datos en MySQL Workbench</h1>
+<p>Abrir MySQL Workbench: Si aún no tienes MySQL Workbench instalado, puedes descargarlo desde https://dev.mysql.com/downloads/installer/ . Una vez instalado, abre el programa.</p>
+
+# 2 - Instalacion de workbench 
+<p>Empezamos la instalacion, elegimos full, en Choosing a Setup Type</p>
+
+# 3 - Esperamos que se instale
+# 4 - Product Configuration
+
+
+
+
+
+
+
+
+
+
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.

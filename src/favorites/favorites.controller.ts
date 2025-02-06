@@ -1,12 +1,24 @@
 import { Controller, Post, Delete, Param, Get, Body } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
 import { FavoritesService } from './favorites.service';
 import { CreateFavoriteDto, RemoveFavoriteDto } from './favorites.dto';
 
+@ApiTags('favorites')
 @Controller('favorites')
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Añadir una receta a los favoritos' })
+  @ApiResponse({
+    status: 201,
+    description: 'Receta añadida a favoritos con éxito',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Solicitud incorrecta',
+  })
+  @ApiBody({ type: CreateFavoriteDto })
   addFavorite(@Body() createFavoriteDto: CreateFavoriteDto) {
     return this.favoritesService.addFavorite(
       createFavoriteDto.user_id,
@@ -14,8 +26,17 @@ export class FavoritesController {
     );
   }
 
-  // Eliminar receta de favoritos
   @Delete()
+  @ApiOperation({ summary: 'Eliminar una receta de los favoritos' })
+  @ApiResponse({
+    status: 200,
+    description: 'Receta eliminada de favoritos con éxito',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Solicitud incorrecta',
+  })
+  @ApiBody({ type: RemoveFavoriteDto })
   removeFavorite(@Body() removeFavoriteDto: RemoveFavoriteDto) {
     return this.favoritesService.removeFavorite(
       removeFavoriteDto.user_id,
@@ -23,8 +44,16 @@ export class FavoritesController {
     );
   }
 
-  // Obtener favoritos de un usuario
   @Get(':userId')
+  @ApiOperation({ summary: 'Obtener los favoritos de un usuario' })
+  @ApiResponse({
+    status: 200,
+    description: 'Favoritos del usuario obtenidos con éxito',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Usuario no encontrado',
+  })
   getFavorites(@Param('userId') userId: string) {
     return this.favoritesService.getFavorites(userId);
   }

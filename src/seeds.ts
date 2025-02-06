@@ -8,6 +8,8 @@ import { Recipe } from './recipe/recipe.entity';
 import { IngredientSeeder } from './db/seeding/seeds/IngredientSeed';
 import { User } from './users/users.entity';
 import { Steps } from './steps/steps.entity';
+import { Favorite } from './favorites/favorites.entity';
+import { Like } from './likes/likes.entity';
 
 config();
 
@@ -18,7 +20,15 @@ const options: DataSourceOptions & SeederOptions = {
   username: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
-  entities: [IngredientEntity, RecipeIngredient, Recipe, User, Steps],
+  entities: [
+    IngredientEntity,
+    RecipeIngredient,
+    Recipe,
+    User,
+    Steps,
+    Favorite,
+    Like,
+  ],
   seeds: [IngredientSeeder],
 };
 

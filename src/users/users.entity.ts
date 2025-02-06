@@ -1,7 +1,7 @@
-import { Favorite } from 'src/favorites/favorites.entity';
+import { Favorite } from '../favorites/favorites.entity';
 import { Recipe } from '../recipe/recipe.entity';
 import { Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
-import { Like } from 'src/likes/likes.entity';
+import { Like } from '../likes/likes.entity';
 
 @Entity('users')
 export class User {
