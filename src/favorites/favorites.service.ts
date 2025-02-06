@@ -34,40 +34,39 @@ export class FavoritesService {
 
     await this.favoriteRepository.save(favorite);
 
-    const user = await this.userRepository.findOne({
-      where: { id_user: userId },
-    });
-    const recipe = await this.recipeRepository.findOne({
-      where: { id_recipe: recipeId },
-      relations: ['user'],
-    });
+    // const user = await this.userRepository.findOne({
+    //   where: { id_user: userId },
+    // });
+    // const recipe = await this.recipeRepository.findOne({
+    //   where: { id_recipe: recipeId },
+    //   relations: ['user'],
+    // });
 
-    if (!user) {
-      throw new Error('Usuario no encontrado');
-    }
+    // if (!user) {
+    //   throw new Error('Usuario no encontrado');
+    // }
 
-    if (!recipe) {
-      throw new Error('Receta no encontrada');
-    }
+    // if (!recipe) {
+    //   throw new Error('Receta no encontrada');
+    // }
 
-    const messageTitle = `Favorito añadido`;
-    const messageBody = `Has añadido la recet: ${recipe.title} a tus favoritos`;
+    // const messageTitle = `Favorito añadido`;
+    // const messageBody = `Has añadido la recet: ${recipe.title} a tus favoritos`;
 
-    console.log(messageTitle, messageBody);
+    // console.log(messageTitle, messageBody);
 
-    const ownerToken = recipe.user?.notification_token;
-    if (ownerToken) {
-      await this.NotificationService.sendPushNotification(
-        ownerToken,
-        messageTitle,
-        messageBody,
-      );
-    } else {
-      console.log(
-        'El propietario de la receta no tiene un token de notificación.',
-      );
-    }
-
+    // const ownerToken = recipe.user?.notification_token;
+    // if (ownerToken) {
+    //   await this.NotificationService.sendPushNotification(
+    //     ownerToken,
+    //     messageTitle,
+    //     messageBody,
+    //   );
+    // } else {
+    //   console.log(
+    //     'El propietario de la receta no tiene un token de notificación.',
+    //   );
+    // }
     return favorite;
   }
 
