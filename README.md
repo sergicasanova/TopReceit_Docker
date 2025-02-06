@@ -140,7 +140,7 @@ Con todo configurado y la base de datos lista, puedes iniciar la aplicación en 
 
    El servidor debería estar corriendo en el puerto configurado en el archivo `.env` (`WEB_SERVER_PORT`). Si no has cambiado nada, se ejecutará en el puerto **8080**.
 
-   Para verificar, abre tu navegador y visita [http://localhost:3000](http://localhost:8080).
+   Para verificar, abre tu navegador y visita [http://localhost:3000/api](http://localhost:8080).
 
 ---
 
