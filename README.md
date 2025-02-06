@@ -1,137 +1,182 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Pasos para la implementación del proyecto en local - Workbench
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Paso 1: Clonar el proyecto y configurar las dependencias
 
-## Pasos para la implementacion del proyecto en local - Workbench
+1. **Clonar el proyecto**:
 
-<h1>Paso 1</h1>
-<p>Descargamos el proyecto o bien hacemos un git clone</p>
+   Si aún no tienes el proyecto, clónalo desde el repositorio usando el siguiente comando:
 
-```bash
-$ npm install
-```
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   cd <nombre_del_proyecto>
+   ```
 
-<p>Introducimos en el .env nuestros datos necesarios</p>
-WEB_SERVER_PORT= puerto de nuestro server
-MYSQL_ROOT_PASSWORD= contraseña a eleccion
-MYSQL_DATABASE= el nombre de nuestra base de datos en workbench
-MYSQL_USER= nombre de usuario
-MYSQL_PASSWORD= contraseña del usuario
-MAIL_USER= gmail a eleccion
-MAIL_CLIENT_ID= id cualquiera
-MAIL_PASSWORD= contraseña de nuestro gmail
-ENABLE_TOKEN_VALIDATION=false
+2. **Instalar las dependencias**:
 
-# Variables de conexión a MySQL
-MYSQL_HOST= # Cambiar de "mongodb" a "localhost"
-MYSQL_PORT=      # Puerto por defecto para MySQL
+   Una vez dentro de la carpeta del proyecto, ejecuta el siguiente comando para instalar todas las dependencias necesarias:
 
-# Variables relacionadas con MongoDB eliminadas
-# MONGODB_URI=mongodb://admin:password@mongodb:27017
-# MONGO_INITDB_ROOT_USERNAME=admin
-# MONGO_INITDB_ROOT_PASSWORD=password
+   ```bash
+   npm install
+   ```
 
-# Claves privadas de nuestro firebase
-FIREBASE_PROJECT_ID=
-FIREBASE_CLIENT_EMAIL=
-FIREBASE_PRIVATE_KEY=
+3. **Configurar las variables de entorno**:
 
-<h1>Paso 2: Crear la base de datos en MySQL Workbench</h1>
-<p>Abrir MySQL Workbench: Si aún no tienes MySQL Workbench instalado, puedes descargarlo desde https://dev.mysql.com/downloads/installer/ . Una vez instalado, abre el programa.</p>
+   Crea un archivo `.env` en la raíz del proyecto y añade las siguientes variables con los datos necesarios para tu configuración local:
 
-# 2 - Instalacion de workbench 
-<p>Empezamos la instalacion, elegimos full, en Choosing a Setup Type</p>
+   ```env
+   WEB_SERVER_PORT=8080               # Puerto de tu servidor
+   MYSQL_ROOT_PASSWORD=               # Contraseña para el usuario root de MySQL
+   MYSQL_DATABASE=                    # Nombre de la base de datos en Workbench
+   MYSQL_USER=                        # Nombre de usuario para la base de datos
+   MYSQL_PASSWORD=                    # Contraseña del usuario de la base de datos
+   MAIL_USER=tu_email@gmail.com       # Correo electrónico de Gmail (si usas SMTP)
+   MAIL_CLIENT_ID=client_id_aqui      # ID de cliente de Google (opcional)
+   MAIL_PASSWORD=tu_contraseña_email # Contraseña de tu correo Gmail
+   ENABLE_TOKEN_VALIDATION=false     # Si no se usa validación de token, dejar como false
 
-# 3 - Esperamos que se instale
-# 4 - Product Configuration
+   # Variables de conexión a MySQL
+   MYSQL_HOST=localhost               # Cambiar de "mongodb" a "localhost"
+   MYSQL_PORT=3306                    # Puerto por defecto para MySQL
 
+   # Claves privadas de Firebase
+   FIREBASE_PROJECT_ID=tu_project_id
+   FIREBASE_CLIENT_EMAIL=tu_email@firebase
+   FIREBASE_PRIVATE_KEY=tu_clave_privada
+   ```
 
+---
 
+## Paso 2: Crear la base de datos en MySQL Workbench
 
+1. **Abrir MySQL Workbench**:
 
+   Si aún no tienes MySQL Workbench instalado, puedes descargarlo desde [este enlace](https://dev.mysql.com/downloads/installer/). Luego, abre el programa.
 
+2. **Instalación de MySQL Workbench**:
 
+   - Al iniciar la instalación, selecciona la opción **Full** en "Choosing a Setup Type".
+   - Avanza en la instalación hasta llegar a la sección "Accounts and Roles", donde debes configurar las credenciales del administrador. Usa:
+     - **Usuario**: `root`
+     - **Contraseña**: `admin` (o la que prefieras)
+   - Finaliza la instalación y haz clic en "Finish".
 
+3. **Crear el usuario y la base de datos**:
 
+   Con MySQL Workbench abierto y conectado a tu servidor MySQL local, ejecuta los siguientes comandos SQL para crear el usuario y la base de datos:
 
-## Description
+   - **Crear usuario**:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+     ```sql
+     CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';
+     ```
 
-## Project setup
+   - **Crear la base de datos**:
 
-```bash
-$ npm install
-```
+     Si no existe ya la base de datos `toprecipe`, crea una:
 
-## Compile and run the project
+     ```sql
+     CREATE DATABASE toprecipe;
+     ```
 
-```bash
-# development
-$ npm run start
+   - **Conceder permisos al usuario**:
 
-# watch mode
-$ npm run start:dev
+     Asegúrate de que el usuario `admin` tenga acceso completo a la base de datos `toprecipe`:
 
-# production mode
-$ npm run start:prod
-```
+     ```sql
+     GRANT ALL PRIVILEGES ON toprecipe.* TO 'admin'@'localhost';
+     FLUSH PRIVILEGES;
+     ```
 
-## Run tests
+4. **Verificar la base de datos**:
 
-```bash
-# unit tests
-$ npm run test
+   Puedes comprobar que la base de datos fue creada correctamente y que el usuario tiene acceso con los siguientes comandos:
 
-# e2e tests
-$ npm run test:e2e
+   ```sql
+   SHOW DATABASES;
+   ```
 
-# test coverage
-$ npm run test:cov
-```
+   Si la base de datos `toprecipe` no aparece, vuelve a crearla. Asegúrate de que el usuario `admin` tiene los permisos necesarios.
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+## Paso 3: Ejecutar el script de semillas (seeding)
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Una vez que la base de datos y las configuraciones estén listas, puedes proceder a ejecutar el script de **seed** para llenar tu base de datos con datos iniciales (como los ingredientes).
 
-## Support
+1. **Ejecutar el comando de seed**:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+   En la terminal, dentro de la carpeta del proyecto, ejecuta el siguiente comando para poblar la base de datos:
 
-## Stay in touch
+   ```bash
+   npm run seed
+   ```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+   Este comando ejecutará el script de **seed** y añadirá los datos iniciales a la base de datos, como los ingredientes.
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## Paso 4: Ejecutar la aplicación
+
+Con todo configurado y la base de datos lista, puedes iniciar la aplicación en diferentes modos:
+
+1. **Modo de desarrollo**:
+
+   Para iniciar el servidor en modo de desarrollo, donde se recargan los cambios automáticamente:
+
+   ```bash
+   npm run start:dev
+   ```
+
+2. **Modo de producción**:
+
+   Si ya estás listo para producción, ejecuta:
+
+   ```bash
+   npm run start:prod
+   ```
+
+3. **Verificar el servidor**:
+
+   El servidor debería estar corriendo en el puerto configurado en el archivo `.env` (`WEB_SERVER_PORT`). Si no has cambiado nada, se ejecutará en el puerto **8080**.
+
+   Para verificar, abre tu navegador y visita [http://localhost:3000](http://localhost:8080).
+
+---
+
+## Paso 5: Ejecutar las pruebas (opcional)
+
+Si deseas ejecutar las pruebas unitarias o de extremo a extremo para verificar que todo esté funcionando correctamente, aun por desarrollar:
+
+1. **Ejecutar pruebas unitarias**:
+
+   ```bash
+   npm run test
+   ```
+
+2. **Ejecutar pruebas de extremo a extremo**:
+
+   ```bash
+   npm run test:e2e
+   ```
+
+3. **Ver cobertura de pruebas**:
+
+   ```bash
+   npm run test:cov
+   ```
+
+---
+
+## Resumen
+
+1. Clonaste el proyecto e instalaste las dependencias.
+2. Configuraste las variables en el archivo `.env` con los datos de tu base de datos y otros servicios.
+3. Creaste la base de datos y configuraste el acceso en **MySQL Workbench**.
+4. Ejecutaste el script de **seeding** para poblar la base de datos con los datos iniciales.
+5. Iniciaste el servidor en modo desarrollo o producción.
+6. (Opcional) Ejecutaste las pruebas para verificar que todo funcione correctamente.
+
+Con estos pasos, deberías tener tu aplicación NestJS funcionando en tu entorno local con la base de datos MySQL configurada en **MySQL Workbench**.
+
+Si necesitas alguna aclaración o ayuda adicional, no dudes en preguntar. ¡Suerte con tu proyecto!
