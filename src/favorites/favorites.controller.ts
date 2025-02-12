@@ -1,4 +1,12 @@
-import { Controller, Post, Delete, Param, Get, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Delete,
+  Param,
+  Get,
+  Body,
+  BadRequestException,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
 import { FavoritesService } from './favorites.service';
 import { CreateFavoriteDto, RemoveFavoriteDto } from './favorites.dto';
@@ -19,7 +27,11 @@ export class FavoritesController {
     description: 'Solicitud incorrecta',
   })
   @ApiBody({ type: CreateFavoriteDto })
-  addFavorite(@Body() createFavoriteDto: CreateFavoriteDto) {
+  async addFavorite(@Body() createFavoriteDto: CreateFavoriteDto) {
+    if (!createFavoriteDto.user_id || !createFavoriteDto.recipe_id) {
+      throw new BadRequestException('Faltan parámetros en la solicitud');
+    }
+
     return this.favoritesService.addFavorite(
       createFavoriteDto.user_id,
       createFavoriteDto.recipe_id,
@@ -37,7 +49,12 @@ export class FavoritesController {
     description: 'Solicitud incorrecta',
   })
   @ApiBody({ type: RemoveFavoriteDto })
-  removeFavorite(@Body() removeFavoriteDto: RemoveFavoriteDto) {
+  @Post('remove')
+  async removeFavorite(@Body() removeFavoriteDto: RemoveFavoriteDto) {
+    if (!removeFavoriteDto.user_id || !removeFavoriteDto.recipe_id) {
+      throw new BadRequestException('Faltan parámetros en la solicitud');
+    }
+
     return this.favoritesService.removeFavorite(
       removeFavoriteDto.user_id,
       removeFavoriteDto.recipe_id,

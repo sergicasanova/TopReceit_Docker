@@ -1,4 +1,12 @@
-import { Controller, Post, Delete, Param, Get, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Delete,
+  Param,
+  Get,
+  Body,
+  BadRequestException,
+} from '@nestjs/common';
 import { LikeService } from './likes.service';
 import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
 import { CreateLikeDto, RemoveLikeDto } from './likes.dto';
@@ -19,10 +27,14 @@ export class LikeController {
     description: 'Solicitud incorrecta',
   })
   @ApiBody({ type: CreateLikeDto })
-  async giveLike(@Body() CreateLikeDto: { userId: string; recipeId: number }) {
+  async giveLike(@Body() createLikeDto: CreateLikeDto) {
+    if (!createLikeDto.userId || !createLikeDto.recipeId) {
+      throw new BadRequestException('Faltan parámetros en la solicitud');
+    }
+
     return this.likeService.giveLike(
-      CreateLikeDto.userId,
-      CreateLikeDto.recipeId,
+      createLikeDto.userId,
+      createLikeDto.recipeId,
     );
   }
 
@@ -37,12 +49,14 @@ export class LikeController {
     description: 'Solicitud incorrecta',
   })
   @ApiBody({ type: RemoveLikeDto })
-  async removeLike(
-    @Body() RemoveLikeDto: { userId: string; recipeId: number },
-  ) {
+  async removeLike(@Body() removeLikeDto: RemoveLikeDto) {
+    if (!removeLikeDto.userId || !removeLikeDto.recipeId) {
+      throw new BadRequestException('Faltan parámetros en la solicitud');
+    }
+
     return this.likeService.removeLike(
-      RemoveLikeDto.userId,
-      RemoveLikeDto.recipeId,
+      removeLikeDto.userId,
+      removeLikeDto.recipeId,
     );
   }
 

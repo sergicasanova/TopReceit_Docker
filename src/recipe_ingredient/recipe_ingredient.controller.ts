@@ -108,10 +108,9 @@ export class RecipeIngredientController {
     status: 404,
     description: 'Ingrediente o receta no encontrados',
   })
-  @ApiParam({ name: 'recipeId', description: 'ID de la receta' })
-  @ApiParam({ name: 'id', description: 'ID del ingrediente' })
-  @Delete(':recipeId/:id')
-  async remove(@Param('recipeId') recipeId: number, @Param('id') id: number) {
-    return this.recipeIngredientService.deleteRecipeIngredient(recipeId, id);
+  @ApiParam({ name: 'id', description: 'ID del recipe_ingrediente' })
+  @Delete('/:id')
+  async remove(@Param('id') id: number) {
+    return this.recipeIngredientService.deleteRecipeIngredient(id);
   }
 }

@@ -1,11 +1,4 @@
-import {
-  IsNotEmpty,
-  IsString,
-  IsArray,
-  ValidateNested,
-  IsOptional,
-} from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsNotEmpty, IsString, IsArray, IsOptional } from 'class-validator';
 import { CreateRecipeIngredientDto } from '../recipe_ingredient/recipe_ingredient.dto';
 import { CreateStepDto } from '../steps/steps.dto';
 import { ApiProperty } from '@nestjs/swagger';
@@ -40,30 +33,15 @@ export class CreateRecipeDto {
 
   @IsArray()
   @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => CreateRecipeIngredientDto)
-  @ApiProperty({
-    description: 'Lista de ingredientes',
-    type: [CreateRecipeIngredientDto],
-    required: false,
-  })
   recipeIngredients?: CreateRecipeIngredientDto[];
 
   @IsArray()
   @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => CreateStepDto)
-  @ApiProperty({
-    description: 'Lista de pasos',
-    type: [CreateStepDto],
-    required: false,
-  })
   steps?: CreateStepDto[];
 }
 
 export class UpdateRecipeDto {
   @IsString()
-  @ApiProperty({ description: 'ID de la receta', example: '1' })
   id_recipe: string;
 
   @IsOptional()
@@ -99,23 +77,9 @@ export class UpdateRecipeDto {
 
   @IsOptional()
   @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreateRecipeIngredientDto)
-  @ApiProperty({
-    description: 'Lista de ingredientes',
-    type: [CreateRecipeIngredientDto],
-    required: false,
-  })
   recipeIngredients?: CreateRecipeIngredientDto[];
 
   @IsOptional()
   @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreateStepDto)
-  @ApiProperty({
-    description: 'Lista de pasos',
-    type: [CreateStepDto],
-    required: false,
-  })
   steps?: CreateStepDto[];
 }

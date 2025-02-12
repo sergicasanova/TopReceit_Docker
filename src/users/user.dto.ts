@@ -8,14 +8,15 @@ import {
 } from 'class-validator';
 import { Favorite } from 'src/favorites/favorites.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 
 export class CreateUserDto {
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   @ApiProperty({
     description: 'ID del usuario',
     example: 'user123',
-    required: false,
+    required: true,
   })
   id_user: string;
 
@@ -34,6 +35,7 @@ export class CreateUserDto {
 
   @IsInt()
   @IsOptional()
+  @Transform(({ value }) => value ?? 2)
   @ApiProperty({ description: 'Rol del usuario', example: 2, required: false })
   role?: number;
 

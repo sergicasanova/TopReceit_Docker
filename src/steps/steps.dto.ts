@@ -18,11 +18,7 @@ export class CreateStepDto {
 
   @IsNotEmpty()
   @IsNumber()
-  @ApiProperty({
-    description: 'ID de la receta a la que pertenece el paso',
-    example: 1,
-  })
-  recipe_id: number;
+  recipe_id?: number;
 
   @IsNotEmpty()
   @IsNumber()
@@ -46,10 +42,6 @@ export class UpdateStepDto {
 
   @IsNotEmpty()
   @IsNumber()
-  @ApiProperty({
-    description: 'ID de la receta a la que pertenece el paso',
-    example: 1,
-  })
   recipe_id: number;
 
   @IsOptional()

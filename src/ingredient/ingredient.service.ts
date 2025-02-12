@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { IngredientEntity } from './ingredient.entity';
 import { Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -24,14 +28,39 @@ export class IngredientService {
   async createIngredient(
     ingredientDto: IngredientDto,
   ): Promise<IngredientEntity> {
+    const { name } = ingredientDto;
+
+    const normalizedName = name.toLowerCase().replace(/\s+/g, '').trim();
+
+    const existingIngredient = await this.ingredientRepository.findOne({
+      where: { name: normalizedName },
+    });
+
+    if (existingIngredient) {
+      throw new BadRequestException('Este ingrediente ya existe.');
+    }
+
     const ingredient = this.ingredientRepository.create(ingredientDto);
-    return await this.ingredientRepository.save(ingredient);
+
+    try {
+      return await this.ingredientRepository.save(ingredient);
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException(
+        'Hubo un problema al crear el ingrediente. Por favor, inténtelo nuevamente.',
+      );
+    }
   }
 
   async deleteIngredient(id: number): Promise<void> {
-    const result = await this.ingredientRepository.delete(id);
-    if (result.affected === 0) {
-      throw new Error('Ingrediente no encontrado');
+    const ingredient = await this.ingredientRepository.findOne({
+      where: { id_ingredient: id },
+    });
+
+    if (!ingredient) {
+      throw new NotFoundException('Ingrediente no encontrado');
     }
+
+    await this.ingredientRepository.remove(ingredient);
   }
 }

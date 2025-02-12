@@ -28,6 +28,10 @@ export class UserController {
     status: 400,
     description: 'Solicitud incorrecta',
   })
+  @ApiResponse({
+    status: 409,
+    description: 'Usuario ya existe',
+  })
   @ApiBody({ type: CreateUserDto })
   async create(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
