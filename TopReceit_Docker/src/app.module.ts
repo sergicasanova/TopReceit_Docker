@@ -50,7 +50,7 @@ import { NotificationModule } from './notification/notification.module';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: 'database',
+        host: configService.get('MYSQL_HOST'),
         port: +configService.get('MYSQL_PORT') || 3306,
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),

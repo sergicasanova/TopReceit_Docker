@@ -52,26 +52,6 @@ export class RecipeService {
     id_recipe: number,
     updateRecipeDto: UpdateRecipeDto,
   ): Promise<Recipe> {
-    const { title, user_id } = updateRecipeDto;
-
-    if (!user_id) {
-      throw new BadRequestException('El ID de usuario es obligatorio.');
-    }
-
-    if (!title || title.trim() === '') {
-      throw new BadRequestException(
-        'El título de la receta es obligatorio y no puede estar vacío.',
-      );
-    }
-
-    const userExists = await this.userRepository.findOne({
-      where: { id_user: user_id },
-    });
-
-    if (!userExists) {
-      throw new BadRequestException('El ID de usuario no existe.');
-    }
-
     const recipe = await this.recipeRepository.findOne({
       where: { id_recipe },
     });

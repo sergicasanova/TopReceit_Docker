@@ -71,10 +71,6 @@ export class UpdateRecipeDto {
   })
   image?: string;
 
-  @IsString()
-  @ApiProperty({ description: 'ID del usuario', example: 'user123' })
-  user_id: string;
-
   @IsOptional()
   @IsArray()
   recipeIngredients?: CreateRecipeIngredientDto[];

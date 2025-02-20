@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   ConflictException,
   Injectable,
   InternalServerErrorException,
@@ -65,21 +64,6 @@ export class UserService {
 
     if (!user) {
       throw new NotFoundException('Usuario no encontrado');
-    }
-
-    // const oldUserData = { ...user };
-
-    // Validación para asegurar que username y email no sean null ni vacíos
-    if (!updateUserDto.username || updateUserDto.username.trim() === '') {
-      throw new BadRequestException(
-        'El nombre de usuario es obligatorio y no puede estar vacío.',
-      );
-    }
-
-    if (!updateUserDto.email || updateUserDto.email.trim() === '') {
-      throw new BadRequestException(
-        'El correo electrónico es obligatorio y no puede estar vacío.',
-      );
     }
 
     this.userRepository.merge(user, updateUserDto);
