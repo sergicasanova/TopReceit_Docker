@@ -56,6 +56,16 @@ export class RecipeController {
     return this.recipeService.updateRecipe(id, updateRecipeDto);
   }
 
+  @Get('public')
+  @ApiOperation({ summary: 'Obtener todas las recetas públicas' })
+  @ApiResponse({
+    status: 200,
+    description: 'Recetas públicas obtenidas con éxito',
+  })
+  async getPublicRecipes() {
+    return this.recipeService.getPublicRecipes();
+  }
+
   @Get()
   @ApiOperation({ summary: 'Obtener todas las recetas' })
   @ApiResponse({

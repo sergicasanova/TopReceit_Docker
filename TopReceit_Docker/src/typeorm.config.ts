@@ -28,7 +28,7 @@ const config = {
     Like,
   ],
   migrations: ['./src/migrations/*.ts'],
-  synchronize: false,
+  synchronize: true,
 };
 
 export default registerAs('typeorm', () => config);

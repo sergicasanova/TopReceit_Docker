@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, IsArray, IsOptional } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsArray,
+  IsOptional,
+  IsBoolean,
+} from 'class-validator';
 import { CreateRecipeIngredientDto } from '../recipe_ingredient/recipe_ingredient.dto';
 import { CreateStepDto } from '../steps/steps.dto';
 import { ApiProperty } from '@nestjs/swagger';
@@ -22,6 +28,15 @@ export class CreateRecipeDto {
   @IsString()
   @ApiProperty({ description: 'Imagen de la receta', example: 'image_url' })
   image: string;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    description: 'Indica si la receta es pública o privada',
+    example: true,
+    required: false,
+  })
+  is_public?: boolean;
 
   @IsNotEmpty()
   @IsString()
@@ -70,6 +85,15 @@ export class UpdateRecipeDto {
     required: false,
   })
   image?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    description: 'Indica si la receta es pública o privada',
+    example: true,
+    required: false,
+  })
+  is_public?: boolean;
 
   @IsOptional()
   @IsArray()

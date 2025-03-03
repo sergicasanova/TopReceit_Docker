@@ -30,6 +30,9 @@ export class Recipe {
   @Column({ nullable: true })
   image: string;
 
+  @Column({ default: false })
+  isPublic: boolean;
+
   @OneToMany(
     () => RecipeIngredient,
     (recipeIngredient) => recipeIngredient.recipe,
