@@ -59,7 +59,7 @@ export class StepsController {
     return this.stepsService.getStepsByRecipe(recipeId);
   }
 
-  @Put(':recipeId/:stepId')
+  @Put(':stepId')
   @ApiOperation({ summary: 'Actualizar un paso de una receta' })
   @ApiResponse({
     status: 200,
@@ -67,17 +67,15 @@ export class StepsController {
   })
   @ApiResponse({
     status: 404,
-    description: 'Receta o paso no encontrados',
+    description: 'Paso no encontrado',
   })
-  @ApiParam({ name: 'recipeId', description: 'ID de la receta' })
   @ApiParam({ name: 'stepId', description: 'ID del paso' })
   @ApiBody({ type: UpdateStepDto })
   async updateStep(
-    @Param('recipeId') recipeId: number,
     @Param('stepId') stepId: number,
     @Body() updateStepDto: UpdateStepDto,
   ) {
-    return this.stepsService.updateStep(recipeId, stepId, updateStepDto);
+    return this.stepsService.updateStep(stepId, updateStepDto);
   }
 
   @Delete(':recipeId/:stepId')

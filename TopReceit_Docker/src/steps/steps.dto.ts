@@ -40,10 +40,6 @@ export class UpdateStepDto {
   })
   description?: string;
 
-  @IsNotEmpty()
-  @IsNumber()
-  recipe_id: number;
-
   @IsOptional()
   @IsNumber()
   @Min(1)

@@ -59,27 +59,15 @@ export class StepsService {
   }
 
   async updateStep(
-    recipeId: number,
     stepId: number,
     updateStepDto: UpdateStepDto,
   ): Promise<Steps> {
-    const recipeExists = await this.recipeRepository.findOne({
-      where: { id_recipe: recipeId },
-    });
-
-    if (!recipeExists) {
-      throw new NotFoundException('Receta no encontrada');
-    }
-
     const step = await this.stepsRepository.findOne({
-      where: {
-        id_steps: stepId,
-        recipe: { id_recipe: recipeId },
-      },
+      where: { id_steps: stepId },
     });
 
     if (!step) {
-      throw new NotFoundException('Paso no encontrado para esta receta');
+      throw new NotFoundException('Paso no encontrado');
     }
 
     Object.assign(step, updateStepDto);
