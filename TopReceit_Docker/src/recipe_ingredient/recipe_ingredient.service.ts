@@ -85,30 +85,17 @@ export class RecipeIngredientService {
   }
 
   async updateRecipeIngredient(
-    recipe_id: number,
     id: number,
     updateRecipeIngredientDto: UpdateRecipeIngredientDto,
   ): Promise<RecipeIngredient> {
-    const recipeExists = await this.recipeRepository.findOne({
-      where: { id_recipe: recipe_id },
-    });
-    if (!recipeExists) {
-      throw new NotFoundException('Receta no encontrada');
-    }
-
     const existingRecipeIngredient =
       await this.recipeIngredientRepository.findOne({
-        where: {
-          id_recipe_ingredient: id,
-          recipe: { id_recipe: recipe_id },
-        },
-        relations: ['recipe', 'ingredient'],
+        where: { id_recipe_ingredient: id },
+        relations: ['ingredient'],
       });
 
     if (!existingRecipeIngredient) {
-      throw new NotFoundException(
-        'La combinación de receta e ingrediente no existe',
-      );
+      throw new NotFoundException('Ingrediente de receta no encontrado');
     }
 
     if (updateRecipeIngredientDto.ingredient_id) {
@@ -117,6 +104,7 @@ export class RecipeIngredientService {
     }
 
     Object.assign(existingRecipeIngredient, updateRecipeIngredientDto);
+
     return this.recipeIngredientRepository.save(existingRecipeIngredient);
   }
 

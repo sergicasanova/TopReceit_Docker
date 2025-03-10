@@ -74,7 +74,7 @@ export class RecipeIngredientController {
     return this.recipeIngredientService.getIngredientById(id);
   }
 
-  @Put(':recipeId/:id')
+  @Put(':id')
   @ApiOperation({ summary: 'Actualizar un ingrediente de receta' })
   @ApiResponse({
     status: 200,
@@ -82,18 +82,15 @@ export class RecipeIngredientController {
   })
   @ApiResponse({
     status: 404,
-    description: 'Ingrediente o receta no encontrados',
+    description: 'Ingrediente no encontrado',
   })
-  @ApiParam({ name: 'recipeId', description: 'ID de la receta' })
-  @ApiParam({ name: 'id', description: 'ID del ingrediente' })
+  @ApiParam({ name: 'id', description: 'ID del ingrediente de receta' })
   @ApiBody({ type: UpdateRecipeIngredientDto })
   async update(
-    @Param('recipeId') recipeId: number,
     @Param('id') id: number,
     @Body() updateRecipeIngredientDto: UpdateRecipeIngredientDto,
   ) {
     return this.recipeIngredientService.updateRecipeIngredient(
-      recipeId,
       id,
       updateRecipeIngredientDto,
     );
