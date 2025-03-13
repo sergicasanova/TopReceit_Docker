@@ -8,6 +8,7 @@ import { RecipeIngredient } from './recipe_ingredient/recipe_ingredient.entity';
 import { Steps } from './steps/steps.entity';
 import { Favorite } from './favorites/favorites.entity';
 import { Like } from './likes/likes.entity';
+import { Follow } from './follow/follow.entity';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ const config = {
     Steps,
     Favorite,
     Like,
+    Follow,
   ],
   migrations: ['./src/migrations/*.ts'],
   synchronize: true,

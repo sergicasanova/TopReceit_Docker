@@ -23,6 +23,8 @@ import { FavoritesModule } from './favorites/favorites.module';
 import { Like } from './likes/likes.entity';
 import { LikeModule } from './likes/likes.module';
 import { NotificationModule } from './notification/notification.module';
+import { Follow } from './follow/follow.entity';
+import { FollowModule } from './follow/follow.module';
 
 @Module({
   imports: [
@@ -45,6 +47,7 @@ import { NotificationModule } from './notification/notification.module';
       Steps,
       Favorite,
       Like,
+      Follow,
     ]),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -63,6 +66,7 @@ import { NotificationModule } from './notification/notification.module';
           Steps,
           Favorite,
           Like,
+          Follow,
         ],
         synchronize: true,
       }),
@@ -76,6 +80,7 @@ import { NotificationModule } from './notification/notification.module';
     FavoritesModule,
     LikeModule,
     NotificationModule,
+    FollowModule,
   ],
   controllers: [],
   providers: [],

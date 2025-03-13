@@ -2,6 +2,7 @@ import { Favorite } from '../favorites/favorites.entity';
 import { Recipe } from '../recipe/recipe.entity';
 import { Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
 import { Like } from '../likes/likes.entity';
+import { Follow } from '../follow/follow.entity';
 
 @Entity('users')
 export class User {
@@ -40,6 +41,14 @@ export class User {
 
   @OneToMany(() => Like, (like) => like.user)
   likes: Like[];
+
+  // Relación para los usuarios que este usuario sigue
+  @OneToMany(() => Follow, (follow) => follow.follower)
+  following: Follow[];
+
+  // Relación para los usuarios que siguen a este usuario
+  @OneToMany(() => Follow, (follow) => follow.followed)
+  followers: Follow[];
 
   // @OneToMany(() => ShoppingList, (shoppingList) => shoppingList.user)
   // shoppingLists: ShoppingList[];
