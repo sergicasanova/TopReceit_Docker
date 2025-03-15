@@ -114,7 +114,7 @@ export class UserService {
   async getUserById(id: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id_user: id },
-      relations: ['favorites', 'favorites.recipe'],
+      relations: ['favorites', 'favorites.recipe', 'following', 'followers'],
     });
 
     if (!user) {
@@ -146,5 +146,36 @@ export class UserService {
     user.notification_token = tokenNotificacion;
 
     return this.userRepository.save(user);
+  }
+
+  async getAllUsers(): Promise<any[]> {
+    const users = await this.userRepository.find({
+      select: ['id_user', 'username', 'avatar', 'preferences'], // Seleccionar solo los campos necesarios
+    });
+
+    return users;
+  }
+
+  async getUserProfile(id: string): Promise<any> {
+    const user = await this.userRepository.findOne({
+      where: { id_user: id },
+      relations: ['recipes', 'recipes.recipeIngredients', 'recipes.steps'], // Cargar recetas y sus relaciones
+    });
+
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    // Filtrar las recetas publicadas
+    const publishedRecipes = user.recipes.filter((recipe) => recipe.isPublic);
+
+    // Devolver los datos del usuario junto con las recetas publicadas y sus relaciones
+    return {
+      id_user: user.id_user,
+      username: user.username,
+      avatar: user.avatar,
+      preferences: user.preferences,
+      publishedRecipes: publishedRecipes, // Devolver las recetas directamente
+    };
   }
 }

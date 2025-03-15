@@ -47,22 +47,38 @@ export class FollowService {
   }
 
   // Método para obtener los usuarios que sigue un usuario
-  async getFollowing(userId: string): Promise<User[]> {
+  async getFollowing(userId: string): Promise<Partial<User>[]> {
     const follows = await this.followRepository.find({
       where: { follower: { id_user: userId } },
       relations: ['followed'],
     });
 
-    return follows.map((follow) => follow.followed);
+    // Filtrar y mapear para devolver solo los campos necesarios
+    return follows
+      .filter((follow) => follow.followed) // Asegurarse de que followed no sea null/undefined
+      .map((follow) => ({
+        id_user: follow.followed.id_user,
+        username: follow.followed.username,
+        avatar: follow.followed.avatar,
+        preferences: follow.followed.preferences,
+      }));
   }
 
   // Método para obtener los seguidores de un usuario
-  async getFollowers(userId: string): Promise<User[]> {
+  async getFollowers(userId: string): Promise<Partial<User>[]> {
     const follows = await this.followRepository.find({
       where: { followed: { id_user: userId } },
       relations: ['follower'],
     });
 
-    return follows.map((follow) => follow.follower);
+    // Mapear para devolver solo los campos necesarios
+    return follows
+      .filter((follow) => follow.follower) // Asegurarse de que follower no sea null/undefined
+      .map((follow) => ({
+        id_user: follow.follower.id_user,
+        username: follow.follower.username,
+        avatar: follow.follower.avatar,
+        preferences: follow.follower.preferences,
+      }));
   }
 }

@@ -18,6 +18,30 @@ import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Get()
+  @ApiOperation({ summary: 'Obtener todos los usuarios' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de usuarios encontrada',
+  })
+  async getAllUsers() {
+    return this.userService.getAllUsers();
+  }
+
+  @Get(':id/profile')
+  @ApiOperation({ summary: 'Obtener el perfil de un usuario' })
+  @ApiResponse({
+    status: 200,
+    description: 'Perfil del usuario encontrado',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Usuario no encontrado',
+  })
+  async getUserProfile(@Param('id') id: string) {
+    return this.userService.getUserProfile(id);
+  }
+
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo usuario' })
   @ApiResponse({
