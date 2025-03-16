@@ -89,6 +89,18 @@ export class RecipeService {
     return publicRecipes;
   }
 
+  async getUserPublicRecipes(userId: string): Promise<Recipe[]> {
+    const userPublicRecipes = await this.recipeRepository.find({
+      where: {
+        isPublic: true,
+        user: { id_user: userId }, // Filtrar por el ID del usuario
+      },
+      relations: ['recipeIngredients', 'steps', 'user', 'likes.user'], // Relaciones necesarias
+    });
+
+    return userPublicRecipes;
+  }
+
   async searchRecipesByTitle(title: string): Promise<Recipe[]> {
     return this.recipeRepository.find({
       where: {

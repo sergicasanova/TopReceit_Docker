@@ -11,12 +11,22 @@ import {
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
-import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiBody,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+import { AuthService } from '../Autentication/auth.service';
 
 @ApiTags('users')
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: 'Obtener todos los usuarios' })
@@ -29,6 +39,7 @@ export class UserController {
   }
 
   @Get(':id/profile')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener el perfil de un usuario' })
   @ApiResponse({
     status: 200,
@@ -40,6 +51,36 @@ export class UserController {
   })
   async getUserProfile(@Param('id') id: string) {
     return this.userService.getUserProfile(id);
+  }
+
+  @Post('login/:id')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'User login' })
+  @ApiResponse({ status: 200, description: 'User successfully logged in.' })
+  @ApiResponse({
+    status: 400,
+    description: 'ID de usuario es requerido',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  async login(@Param('id') id_user: string) {
+    if (!id_user) {
+      throw new HttpException(
+        'ID de usuario es obligatorio',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    try {
+      const token = await this.authService.generateToken(id_user);
+
+      // Devolver el token
+      return { token };
+    } catch (error) {
+      throw new HttpException(
+        error.message || 'Error durante el inicio de sesión',
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Post()

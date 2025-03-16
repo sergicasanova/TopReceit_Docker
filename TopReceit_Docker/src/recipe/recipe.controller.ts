@@ -66,6 +66,23 @@ export class RecipeController {
     return this.recipeService.getPublicRecipes();
   }
 
+  @Get('user/:userId/public')
+  @ApiOperation({
+    summary: 'Obtener las recetas públicas de un usuario específico',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Recetas públicas del usuario obtenidas con éxito',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Usuario no encontrado o no tiene recetas públicas',
+  })
+  async getUserPublicRecipes(@Param('userId') userId: string) {
+    const recipes = await this.recipeService.getUserPublicRecipes(userId);
+    return recipes;
+  }
+
   @Get()
   @ApiOperation({ summary: 'Obtener todas las recetas' })
   @ApiResponse({

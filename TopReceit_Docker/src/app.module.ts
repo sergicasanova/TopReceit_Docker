@@ -1,11 +1,14 @@
-import { Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { UtilsModule } from './utils/utils.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from './users/users.entity';
-// import { AuthorizationMiddleware } from './authorization.middleware';
-// import { AuthService } from './Autentication/auth.service';
 import { LabelsModule } from './utils/labels.module';
 // import { MongooseModule } from '@nestjs/mongoose';
 import { Recipe } from './recipe/recipe.entity';
@@ -25,6 +28,8 @@ import { LikeModule } from './likes/likes.module';
 import { NotificationModule } from './notification/notification.module';
 import { Follow } from './follow/follow.entity';
 import { FollowModule } from './follow/follow.module';
+import { AuthorizationMiddleware } from './authorization.middleware';
+import { AuthService } from './Autentication/auth.service';
 
 @Module({
   imports: [
@@ -83,10 +88,16 @@ import { FollowModule } from './follow/follow.module';
     FollowModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [AuthorizationMiddleware, AuthService],
 })
 export class AppModule implements NestModule {
-  configure() {
-    // Aquí irían configuraciones de middleware si es necesario
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthorizationMiddleware)
+      .exclude(
+        { path: 'users/login/:id', method: RequestMethod.POST },
+        { path: 'users', method: RequestMethod.POST },
+      )
+      .forRoutes('*');
   }
 }

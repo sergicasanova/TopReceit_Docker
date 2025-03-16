@@ -15,11 +15,11 @@ export class User {
   @Column()
   username: string;
 
-  // @Column({ type: 'timestamp', nullable: true })
-  // tokenExpiration: Date;
+  @Column({ type: 'timestamp', nullable: true })
+  tokenExpiration: Date;
 
-  // @Column({ nullable: true })
-  // token: string;
+  @Column({ nullable: true })
+  token: string;
 
   @Column({ default: 2 })
   role: number;
