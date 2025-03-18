@@ -7,15 +7,26 @@ import {
   Param,
   Body,
   Delete,
+  Inject,
 } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto, UpdateRecipeDto } from './recipe.dto';
 import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
+import { Recipe } from './recipe.entity';
+import { UserService } from '../users/users.service';
 
 @ApiTags('recipes')
 @Controller('recipe')
 export class RecipeController {
-  constructor(private readonly recipeService: RecipeService) {}
+  constructor(
+    private readonly recipeService: RecipeService,
+    @Inject(UserService) private readonly userService: UserService,
+  ) {}
+
+  @Get('/public/following/:userId')
+  async getPublicRecipesByFollowing(@Param('userId') userId: string) {
+    return this.recipeService.getPublicRecipesByFollowing(userId);
+  }
 
   @Post()
   @ApiOperation({ summary: 'Crear una nueva receta' })
@@ -64,6 +75,26 @@ export class RecipeController {
   })
   async getPublicRecipes() {
     return this.recipeService.getPublicRecipes();
+  }
+
+  @Get('/public/filtered')
+  async getFilteredPublicRecipes(
+    @Query('title') title?: string,
+    @Query('steps') steps?: number,
+    @Query('ingredients') ingredients?: number,
+    @Query('followedUserIds') followedUserIds?: string,
+  ): Promise<Recipe[]> {
+    // Parsear los IDs de usuarios seguidos si están presentes
+    const followedUserIdsArray = followedUserIds
+      ? followedUserIds.split(',')
+      : undefined;
+
+    return this.recipeService.getFilteredPublicRecipes(
+      title,
+      steps,
+      ingredients,
+      followedUserIdsArray,
+    );
   }
 
   @Get('user/:userId/public')

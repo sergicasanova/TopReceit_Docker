@@ -4,10 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
+import { Repository, Like, In } from 'typeorm';
 import { Recipe } from './recipe.entity';
 import { CreateRecipeDto, UpdateRecipeDto } from './recipe.dto';
-import { User } from 'src/users/users.entity';
+import { User } from '../users/users.entity';
+import { Follow } from '../follow/follow.entity';
 
 @Injectable()
 export class RecipeService {
@@ -16,6 +17,8 @@ export class RecipeService {
     private readonly recipeRepository: Repository<Recipe>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Follow)
+    private readonly followRepository: Repository<Follow>,
   ) {}
 
   async createRecipe(createRecipeDto: CreateRecipeDto): Promise<Recipe> {
@@ -93,9 +96,9 @@ export class RecipeService {
     const userPublicRecipes = await this.recipeRepository.find({
       where: {
         isPublic: true,
-        user: { id_user: userId }, // Filtrar por el ID del usuario
+        user: { id_user: userId },
       },
-      relations: ['recipeIngredients', 'steps', 'user', 'likes.user'], // Relaciones necesarias
+      relations: ['recipeIngredients', 'steps', 'user', 'likes.user'],
     });
 
     return userPublicRecipes;
@@ -147,5 +150,80 @@ export class RecipeService {
     }
 
     await this.recipeRepository.remove(recipe);
+  }
+
+  async getFilteredPublicRecipes(
+    title?: string,
+    steps?: number,
+    ingredients?: number,
+    followedUserIds?: string[],
+  ): Promise<Recipe[]> {
+    // Crear el query base para recetas publicadas
+    let query = this.recipeRepository
+      .createQueryBuilder('recipe')
+      .leftJoinAndSelect('recipe.recipeIngredients', 'recipeIngredients')
+      .leftJoinAndSelect('recipe.steps', 'steps')
+      .leftJoinAndSelect('recipe.user', 'user')
+      .where('recipe.isPublic = :isPublic', { isPublic: true });
+
+    // Filtrar por título
+    if (title) {
+      query = query.andWhere('recipe.title LIKE :title', {
+        title: `%${title}%`,
+      });
+    }
+
+    // Filtrar por número de pasos
+    if (steps) {
+      query = query.andWhere('steps.length <= :steps', { steps });
+    }
+
+    // Filtrar por número de ingredientes
+    if (ingredients) {
+      query = query.andWhere(
+        'recipe.recipeIngredients.length <= :ingredients',
+        { ingredients },
+      );
+    }
+
+    // Filtrar por usuarios seguidos
+    if (followedUserIds && followedUserIds.length > 0) {
+      query = query.andWhere('user.id_user IN (:...followedUserIds)', {
+        followedUserIds,
+      });
+    }
+
+    // Ejecutar la consulta y devolver las recetas filtradas
+    const filteredRecipes = await query.getMany();
+    return filteredRecipes;
+  }
+
+  async getPublicRecipesByFollowing(userId: string): Promise<Recipe[]> {
+    // 1. Obtener los IDs de los usuarios seguidos
+    const follows = await this.followRepository.find({
+      where: { follower: { id_user: userId } },
+      relations: ['followed'],
+    });
+
+    const followedUserIds = follows
+      .filter((follow) => follow.followed)
+      .map((follow) => follow.followed.id_user);
+
+    console.log('IDs de usuarios seguidos:', followedUserIds);
+
+    if (followedUserIds.length === 0) {
+      return [];
+    }
+
+    // 2. Filtrar las recetas públicas de estos usuarios
+    const recipes = await this.recipeRepository.find({
+      where: {
+        isPublic: true,
+        user: { id_user: In(followedUserIds) }, // Filtrar por IDs de usuarios seguidos
+      },
+      relations: ['user'], // Incluye los datos del usuario asociado a cada receta
+    });
+
+    return recipes;
   }
 }
