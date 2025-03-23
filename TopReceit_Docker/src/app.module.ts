@@ -30,6 +30,9 @@ import { Follow } from './follow/follow.entity';
 import { FollowModule } from './follow/follow.module';
 import { AuthorizationMiddleware } from './authorization.middleware';
 import { AuthService } from './Autentication/auth.service';
+import { ShoppingList } from './shopping_list/shopping_list.entity';
+import { ShoppingListItem } from './shopping_list/shopping_list_item.entity';
+import { ShoppingListModule } from './shopping_list/shopping_list.module';
 
 @Module({
   imports: [
@@ -53,6 +56,8 @@ import { AuthService } from './Autentication/auth.service';
       Favorite,
       Like,
       Follow,
+      ShoppingList,
+      ShoppingListItem,
     ]),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -72,6 +77,8 @@ import { AuthService } from './Autentication/auth.service';
           Favorite,
           Like,
           Follow,
+          ShoppingList,
+          ShoppingListItem,
         ],
         synchronize: true,
       }),
@@ -86,6 +93,7 @@ import { AuthService } from './Autentication/auth.service';
     LikeModule,
     NotificationModule,
     FollowModule,
+    ShoppingListModule,
   ],
   controllers: [],
   providers: [AuthorizationMiddleware, AuthService],

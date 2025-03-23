@@ -3,6 +3,7 @@ import { Recipe } from '../recipe/recipe.entity';
 import { Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
 import { Like } from '../likes/likes.entity';
 import { Follow } from '../follow/follow.entity';
+import { ShoppingList } from '../shopping_list/shopping_list.entity';
 
 @Entity('users')
 export class User {
@@ -50,6 +51,6 @@ export class User {
   @OneToMany(() => Follow, (follow) => follow.followed)
   followers: Follow[];
 
-  // @OneToMany(() => ShoppingList, (shoppingList) => shoppingList.user)
-  // shoppingLists: ShoppingList[];
+  @OneToMany(() => ShoppingList, (shoppingList) => shoppingList.user)
+  shoppingLists: ShoppingList[];
 }
