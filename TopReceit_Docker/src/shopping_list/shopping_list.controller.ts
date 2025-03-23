@@ -5,6 +5,7 @@ import {
   NotFoundException,
   Delete,
   Get,
+  Patch,
 } from '@nestjs/common';
 import { ShoppingListService } from './shopping_list.service';
 
@@ -54,6 +55,18 @@ export class ShoppingListController {
     try {
       await this.shoppingListService.removeShoppingListItem(userId, itemId);
       return { message: 'Ítem eliminado correctamente' };
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
+  @Patch('toggle-item-purchased/:userId/:itemId')
+  async toggleItemPurchased(
+    @Param('userId') userId: string,
+    @Param('itemId') itemId: string,
+  ) {
+    try {
+      return await this.shoppingListService.toggleItemPurchased(userId, itemId);
     } catch (error) {
       throw new NotFoundException(error.message);
     }

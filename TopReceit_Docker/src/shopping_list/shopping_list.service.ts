@@ -154,4 +154,40 @@ export class ShoppingListService {
     // Eliminar el ítem de la base de datos
     await this.shoppingListItemRepository.remove(itemToRemove);
   }
+
+  /**
+   * Invierte el valor de isPurchased (toggle).
+   */
+  async toggleItemPurchased(
+    userId: string,
+    itemId: string,
+  ): Promise<ShoppingListItem> {
+    // Buscar la lista de la compra activa para el usuario
+    const shoppingList = await this.shoppingListRepository.findOne({
+      where: { user: { id_user: userId } },
+      relations: ['items'], // Cargar los ítems de la lista
+    });
+
+    if (!shoppingList) {
+      throw new NotFoundException(
+        'No se encontró una lista de la compra activa',
+      );
+    }
+
+    // Buscar el ítem en la lista
+    const item = shoppingList.items.find((item) => item.id === itemId);
+    if (!item) {
+      throw new NotFoundException(
+        'Ítem no encontrado en la lista de la compra',
+      );
+    }
+
+    // Invertir el valor de isPurchased
+    item.isPurchased = !item.isPurchased;
+
+    // Guardar el ítem actualizado en la base de datos
+    await this.shoppingListItemRepository.save(item);
+
+    return item;
+  }
 }
