@@ -18,9 +18,11 @@ import {
   ApiTags,
   ApiBody,
   ApiParam,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 
 @ApiTags('recipe-ingredients')
+@ApiBearerAuth()
 @Controller('recipe-ingredients')
 export class RecipeIngredientController {
   constructor(

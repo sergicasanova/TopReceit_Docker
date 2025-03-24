@@ -11,11 +11,18 @@ import {
 } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto, UpdateRecipeDto } from './recipe.dto';
-import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiBody,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { Recipe } from './recipe.entity';
 import { UserService } from '../users/users.service';
 
 @ApiTags('recipes')
+@ApiBearerAuth()
 @Controller('recipe')
 export class RecipeController {
   constructor(

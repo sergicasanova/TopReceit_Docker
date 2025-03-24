@@ -7,11 +7,18 @@ import {
   Body,
   BadRequestException,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiBody,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { FavoritesService } from './favorites.service';
 import { CreateFavoriteDto, RemoveFavoriteDto } from './favorites.dto';
 
 @ApiTags('favorites')
+@ApiBearerAuth()
 @Controller('favorites')
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}

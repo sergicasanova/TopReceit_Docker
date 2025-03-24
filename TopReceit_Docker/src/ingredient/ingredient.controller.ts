@@ -9,9 +9,15 @@ import {
 } from '@nestjs/common';
 import { IngredientService } from './ingredient.service';
 import { IngredientDto } from './ingredient.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiTags('ingredients')
+@ApiBearerAuth()
 @Controller('ingredient')
 export class IngredientController {
   constructor(private readonly ingredientService: IngredientService) {}

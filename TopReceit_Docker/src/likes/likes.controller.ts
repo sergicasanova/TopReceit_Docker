@@ -8,10 +8,17 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { LikeService } from './likes.service';
-import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiBody,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { CreateLikeDto, RemoveLikeDto } from './likes.dto';
 
 @ApiTags('likes')
+@ApiBearerAuth()
 @Controller('likes')
 export class LikeController {
   constructor(private readonly likeService: LikeService) {}

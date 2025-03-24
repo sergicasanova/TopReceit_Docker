@@ -21,6 +21,7 @@ import {
 import { AuthService } from '../Autentication/auth.service';
 
 @ApiTags('users')
+@ApiBearerAuth()
 @Controller('users')
 export class UserController {
   constructor(
@@ -30,6 +31,7 @@ export class UserController {
 
   @Get()
   @ApiOperation({ summary: 'Obtener todos los usuarios' })
+  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Lista de usuarios encontrada',
@@ -85,6 +87,7 @@ export class UserController {
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo usuario' })
+  @ApiBearerAuth()
   @ApiResponse({
     status: 201,
     description: 'Usuario creado con éxito',
@@ -104,6 +107,7 @@ export class UserController {
 
   @Put(':id')
   @ApiOperation({ summary: 'Actualizar un usuario existente' })
+  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Usuario actualizado con éxito',
@@ -120,6 +124,7 @@ export class UserController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Obtener un usuario por ID' })
+  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Usuario encontrado',
@@ -134,6 +139,7 @@ export class UserController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Eliminar un usuario por ID' })
+  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Usuario eliminado con éxito',
@@ -146,8 +152,9 @@ export class UserController {
     return this.userService.removeUser(id);
   }
 
-  @ApiOperation({ summary: 'Token variable desde el frontend' })
   @Put(':id/token')
+  @ApiOperation({ summary: 'Token variable desde el frontend' })
+  @ApiBearerAuth()
   async updateTokenNotification(
     @Param('id') id: string,
     @Body('token_notificacion') tokenNotificacion: string,
