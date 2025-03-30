@@ -2,13 +2,14 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  Optional,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Favorite } from './favorites.entity';
-import { NotificationService } from 'src/notification/notification.service';
-import { User } from 'src/users/users.entity';
-import { Recipe } from 'src/recipe/recipe.entity';
+import { NotificationService } from '../notification/notification.service';
+import { User } from '../users/users.entity';
+import { Recipe } from '../recipe/recipe.entity';
 
 @Injectable()
 export class FavoritesService {
@@ -19,6 +20,7 @@ export class FavoritesService {
     private userRepository: Repository<User>,
     @InjectRepository(Recipe)
     private recipeRepository: Repository<Recipe>,
+    @Optional()
     private NotificationService: NotificationService,
   ) {}
 
