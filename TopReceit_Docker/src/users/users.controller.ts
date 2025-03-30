@@ -31,7 +31,6 @@ export class UserController {
 
   @Get()
   @ApiOperation({ summary: 'Obtener todos los usuarios' })
-  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Lista de usuarios encontrada',
@@ -41,7 +40,6 @@ export class UserController {
   }
 
   @Get(':id/profile')
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener el perfil de un usuario' })
   @ApiResponse({
     status: 200,
@@ -56,7 +54,6 @@ export class UserController {
   }
 
   @Post('login/:id')
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'User login' })
   @ApiResponse({ status: 200, description: 'User successfully logged in.' })
   @ApiResponse({
@@ -87,7 +84,6 @@ export class UserController {
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo usuario' })
-  @ApiBearerAuth()
   @ApiResponse({
     status: 201,
     description: 'Usuario creado con éxito',
@@ -107,7 +103,6 @@ export class UserController {
 
   @Put(':id')
   @ApiOperation({ summary: 'Actualizar un usuario existente' })
-  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Usuario actualizado con éxito',
@@ -124,7 +119,6 @@ export class UserController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Obtener un usuario por ID' })
-  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Usuario encontrado',
@@ -139,7 +133,6 @@ export class UserController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Eliminar un usuario por ID' })
-  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: 'Usuario eliminado con éxito',
@@ -154,7 +147,6 @@ export class UserController {
 
   @Put(':id/token')
   @ApiOperation({ summary: 'Token variable desde el frontend' })
-  @ApiBearerAuth()
   async updateTokenNotification(
     @Param('id') id: string,
     @Body('token_notificacion') tokenNotificacion: string,

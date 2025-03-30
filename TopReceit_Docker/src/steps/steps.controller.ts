@@ -15,9 +15,11 @@ import {
   ApiTags,
   ApiBody,
   ApiParam,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 
 @ApiTags('steps')
+@ApiBearerAuth()
 @Controller('steps')
 export class StepsController {
   constructor(private readonly stepsService: StepsService) {}

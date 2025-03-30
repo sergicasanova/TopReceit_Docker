@@ -1,20 +1,23 @@
 import {
   ConflictException,
+  HttpException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  Optional,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './users.entity';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
-import { NotificationService } from 'src/notification/notification.service';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @Optional()
     private NotificationService: NotificationService,
   ) {}
 
@@ -46,10 +49,12 @@ export class UserService {
       const newUser = this.userRepository.create(createUserDto);
       return await this.userRepository.save(newUser);
     } catch (error) {
-      if (error instanceof ConflictException) {
+      // Si ya es un error de Nest (NotFoundException o ConflictException), lo relanzamos
+      if (error instanceof HttpException) {
         throw error;
       }
 
+      // Solo lanza InternalServerErrorException para errores desconocidos
       console.error(error);
       throw new InternalServerErrorException(
         'Hubo un problema al crear el usuario. Por favor, inténtelo nuevamente.',
