@@ -63,7 +63,7 @@ import { ShoppingListModule } from './shopping_list/shopping_list.module';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: configService.get('MYSQL_HOST'),
+        host: 'database',
         port: +configService.get('MYSQL_PORT') || 3306,
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),
