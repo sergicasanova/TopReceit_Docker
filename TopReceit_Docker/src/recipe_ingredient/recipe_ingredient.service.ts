@@ -24,6 +24,10 @@ export class RecipeIngredientService {
     private ingredientRepository: Repository<IngredientEntity>,
   ) {}
 
+  /**
+   * Crea una nueva relación entre una receta y un ingrediente.
+   * Verifica que la receta y el ingrediente existan antes de crear la relación.
+   */
   async createRecipeIngredient(
     createRecipeIngredientDto: CreateRecipeIngredientDto,
   ): Promise<RecipeIngredient> {
@@ -60,6 +64,9 @@ export class RecipeIngredientService {
     return this.recipeIngredientRepository.save(newRecipeIngredient);
   }
 
+  /**
+   * Obtiene todos los ingredientes asociados a una receta específica.
+   */
   async getAllIngredientsForRecipe(
     recipeId: number,
   ): Promise<RecipeIngredient[]> {
@@ -69,6 +76,9 @@ export class RecipeIngredientService {
     });
   }
 
+  /**
+   * Obtiene un ingrediente de receta por su ID.
+   */
   async getIngredientById(
     id_recipe_ingredient: number,
   ): Promise<RecipeIngredient> {
@@ -84,6 +94,10 @@ export class RecipeIngredientService {
     return ingredient;
   }
 
+  /**
+   * Actualiza la información de un ingrediente en una receta.
+   * Verifica que el ingrediente de la receta exista antes de actualizar.
+   */
   async updateRecipeIngredient(
     id: number,
     updateRecipeIngredientDto: UpdateRecipeIngredientDto,
@@ -108,6 +122,10 @@ export class RecipeIngredientService {
     return this.recipeIngredientRepository.save(existingRecipeIngredient);
   }
 
+  /**
+   * Elimina un ingrediente de una receta.
+   * Verifica que la relación entre la receta y el ingrediente exista antes de eliminarla.
+   */
   async deleteRecipeIngredient(idRecipeIngredient: number): Promise<void> {
     const ingredient = await this.recipeIngredientRepository.findOne({
       where: {

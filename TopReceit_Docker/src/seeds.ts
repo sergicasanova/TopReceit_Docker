@@ -10,6 +10,9 @@ import { User } from './users/users.entity';
 import { Steps } from './steps/steps.entity';
 import { Favorite } from './favorites/favorites.entity';
 import { Like } from './likes/likes.entity';
+import { ShoppingList } from './shopping_list/shopping_list.entity';
+import { ShoppingListItem } from './shopping_list/shopping_list_item.entity';
+import { Follow } from './follow/follow.entity';
 
 config();
 
@@ -28,6 +31,9 @@ const options: DataSourceOptions & SeederOptions = {
     Steps,
     Favorite,
     Like,
+    ShoppingList,
+    ShoppingListItem,
+    Follow,
   ],
   seeds: [IngredientSeeder],
 };

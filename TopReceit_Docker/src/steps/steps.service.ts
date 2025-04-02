@@ -19,6 +19,11 @@ export class StepsService {
     private readonly recipeRepository: Repository<Recipe>,
   ) {}
 
+  /**
+   * Crea un nuevo paso para una receta específica.
+   * Verifica que la receta exista antes de agregar el paso.
+   * Valida que los datos requeridos estén presentes.
+   */
   async createStep(
     recipeId: number,
     createStepDto: CreateStepDto,
@@ -39,10 +44,13 @@ export class StepsService {
       recipe: { id_recipe: recipeId },
     });
 
-    const savedStep = await this.stepsRepository.save(step);
-    return savedStep;
+    return await this.stepsRepository.save(step);
   }
 
+  /**
+   * Obtiene todos los pasos de una receta en orden ascendente.
+   * Verifica que la receta exista antes de buscar los pasos.
+   */
   async getStepsByRecipe(recipeId: number): Promise<Steps[]> {
     const recipeExists = await this.recipeRepository.findOne({
       where: { id_recipe: recipeId },
@@ -58,6 +66,10 @@ export class StepsService {
     });
   }
 
+  /**
+   * Actualiza un paso específico por su ID.
+   * Verifica que el paso exista antes de actualizarlo.
+   */
   async updateStep(
     stepId: number,
     updateStepDto: UpdateStepDto,
@@ -75,6 +87,10 @@ export class StepsService {
     return this.stepsRepository.save(step);
   }
 
+  /**
+   * Elimina un paso de una receta específica.
+   * Verifica que la receta y el paso existan antes de eliminarlos.
+   */
   async deleteStep(stepId: number, recipeId: number): Promise<void> {
     const recipeExists = await this.recipeRepository.findOne({
       where: { id_recipe: recipeId },
@@ -99,6 +115,9 @@ export class StepsService {
     }
   }
 
+  /**
+   * Elimina un paso por su ID sin importar la receta.
+   */
   async deleteStepid(stepId: number): Promise<void> {
     const result = await this.stepsRepository.delete({ id_steps: stepId });
     if (result.affected === 0) {

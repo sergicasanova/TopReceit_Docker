@@ -21,6 +21,18 @@ export class RecipeService {
     private readonly followRepository: Repository<Follow>,
   ) {}
 
+  /**
+   * Crea una nueva receta en la base de datos.
+   *
+   * Verifica que el ID de usuario y el título sean obligatorios.
+   * Maneja errores cuando faltan datos obligatorios o cuando ocurre un
+   * problema al guardar la receta.
+   *
+   * @param createRecipeDto Los datos de la receta a crear.
+   * @returns La receta creada.
+   * @throws {BadRequestException} Si el ID de usuario o el título son inválidos.
+   */
+
   async createRecipe(createRecipeDto: CreateRecipeDto): Promise<Recipe> {
     const { title, description, user_id, image } = createRecipeDto;
     if (!user_id) {
@@ -51,6 +63,16 @@ export class RecipeService {
     }
   }
 
+  /**
+   * Actualiza una receta existente.
+   *
+   * Verifica que la receta exista antes de actualizar.
+   * Maneja errores de receta no encontrada y errores internos del servidor.
+   *
+   * @param id_recipe El ID de la receta a actualizar.
+   * @param updateRecipeDto Los datos de la receta a actualizar.
+   * @returns La receta actualizada.
+   */
   async updateRecipe(
     id_recipe: number,
     updateRecipeDto: UpdateRecipeDto,
@@ -75,6 +97,11 @@ export class RecipeService {
     }
   }
 
+  /**
+   * Obtiene todas las recetas en la base de datos.
+   * Incluye los ingredientes, pasos, usuario y likes de cada receta.
+   * @returns Un array de todas las recetas en la base de datos
+   */
   async getAllRecipes(): Promise<Recipe[]> {
     const recipes = await this.recipeRepository.find({
       relations: ['recipeIngredients', 'steps', 'user', 'likes.user'],
@@ -92,6 +119,11 @@ export class RecipeService {
     return publicRecipes;
   }
 
+  /**
+   * Obtiene las recetas públicas de un usuario por su ID.
+   * @param userId El ID del usuario
+   * @returns Un array de recetas públicas del usuario
+   */
   async getUserPublicRecipes(userId: string): Promise<Recipe[]> {
     const userPublicRecipes = await this.recipeRepository.find({
       where: {
@@ -112,6 +144,12 @@ export class RecipeService {
     });
   }
 
+  /**
+   * Busca las recetas de un usuario por su ID.
+   * @param userId El ID del usuario
+   * @returns Un array de recetas
+   * @throws {NotFoundException} Si el ID de usuario no existe
+   */
   async getRecipesByUserId(userId: string): Promise<Recipe[]> {
     const userExists = await this.userRepository.findOne({
       where: { id_user: userId },
@@ -129,6 +167,13 @@ export class RecipeService {
     return recipes;
   }
 
+  /**
+   * Devuelve una receta específica por su ID.
+   *
+   * @param id_recipe El ID de la receta a buscar.
+   * @returns La receta encontrada. Si no se encuentra, lanza un error
+   *   `NotFoundException`.
+   */
   async getRecipeById(id_recipe: number): Promise<Recipe> {
     const recipe = await this.recipeRepository.findOne({
       where: { id_recipe },
@@ -152,6 +197,28 @@ export class RecipeService {
     await this.recipeRepository.remove(recipe);
   }
 
+  /**
+   * Devuelve las recetas públicas que coinciden con los filtros
+   * especificados.
+   *
+   * Los filtros que se pueden especificar son:
+   * - `title`: el título de la receta debe contener este valor.
+   * - `steps`: el número de pasos de la receta debe ser menor o igual
+   *   a este valor.
+   * - `ingredients`: el número de ingredientes de la receta debe ser
+   *   menor o igual a este valor.
+   * - `followedUserIds`: un array de IDs de usuarios seguidos. Las
+   *   recetas devueltas deben pertenecer a alguno de estos usuarios.
+   *
+   * Si no se especifica ningún filtro, se devuelve un array vacío.
+   *
+   * @param title título de la receta a buscar
+   * @param steps número de pasos de la receta a buscar
+   * @param ingredients número de ingredientes de la receta a buscar
+   * @param followedUserIds array de IDs de usuarios seguidos
+   * @returns un array de recetas públicas que coinciden con los filtros
+   *   especificados
+   */
   async getFilteredPublicRecipes(
     title?: string,
     steps?: number,
@@ -198,6 +265,18 @@ export class RecipeService {
     return filteredRecipes;
   }
 
+  /**
+   * Devuelve las recetas públicas de los usuarios seguidos por el usuario con
+   * el ID especificado.
+   *
+   * Primero, se obtienen los IDs de los usuarios seguidos. Luego, se filtran
+   * las recetas públicas de estos usuarios y se devuelven.
+   *
+   * Si el usuario no sigue a nadie, se devuelve un array vacío.
+   *
+   * @param userId El ID del usuario que sigue a otros usuarios
+   * @returns Un array de recetas públicas de los usuarios seguidos
+   */
   async getPublicRecipesByFollowing(userId: string): Promise<Recipe[]> {
     // 1. Obtener los IDs de los usuarios seguidos
     const follows = await this.followRepository.find({

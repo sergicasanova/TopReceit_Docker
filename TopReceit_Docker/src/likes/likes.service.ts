@@ -21,6 +21,18 @@ export class LikeService {
     private NotificationService: NotificationService,
   ) {}
 
+  /**
+   * Registra un like a una receta por parte de un usuario.
+   *
+   * Verifica que el usuario y la receta existan antes de registrar el like.
+   * Lanza un error `NotFoundException` si el usuario o la receta no existen.
+   * Lanza un error `BadRequestException` si el usuario ya dio like a la receta.
+   *
+   * Envia una notificacion push al propietario de la receta si tiene un token de notificacion.
+   * @param userId El ID del usuario que da like.
+   * @param recipeId El ID de la receta a la que se da like.
+   * @returns El like registrado.
+   */
   async giveLike(userId: string, recipeId: number): Promise<Like> {
     const userExists = await this.userRepository.findOne({
       where: { id_user: userId },
@@ -68,6 +80,15 @@ export class LikeService {
     return newLike;
   }
 
+  /**
+   * Quita un like de una receta por parte de un usuario.
+   *
+   * Verifica que el usuario y la receta existan antes de quitar el like.
+   * Lanza un error `NotFoundException` si el usuario o la receta no existen.
+   * Lanza un error `BadRequestException` si el like no existe para la receta y usuario.
+   * @param userId El ID del usuario que da like.
+   * @param recipeId El ID de la receta a la que se da like.
+   */
   async removeLike(userId: string, recipeId: number): Promise<void> {
     const userExists = await this.userRepository.findOne({
       where: { id_user: userId },
@@ -94,6 +115,11 @@ export class LikeService {
     await this.likeRepository.remove(like);
   }
 
+  /**
+   * Devuelve el numero de likes que tiene una receta.
+   * @param recipeId El ID de la receta.
+   * @returns El numero de likes.
+   */
   async countLikes(recipeId: number): Promise<number> {
     const likes = await this.likeRepository.find({
       where: { recipe: { id_recipe: recipeId } },
@@ -102,6 +128,12 @@ export class LikeService {
     return likes.length;
   }
 
+  /**
+   * Recupera la lista de IDs de usuarios que han dado like a una receta especifica.
+   *
+   * @param recipeId El ID de la receta cuyos likes se estan recuperando.
+   * @returns Un array de IDs de usuarios que dieron like a la receta.
+   */
   async getLikes(recipeId: number): Promise<string[]> {
     const likes = await this.likeRepository.find({
       where: { recipe: { id_recipe: recipeId } },

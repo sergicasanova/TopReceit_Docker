@@ -24,6 +24,17 @@ export class FavoritesService {
     private NotificationService: NotificationService,
   ) {}
 
+  /**
+   * A ade una receta a los favoritos de un usuario.
+   *
+   * Verifica que el usuario y la receta existan antes de agregar el favorito.
+   * Lanza un error `BadRequestException` si el usuario ya tiene la receta en sus favoritos.
+   * Lanza un error `NotFoundException` si el usuario o la receta no existen.
+   * Envia una notificacion push al propietario de la receta si tiene un token de notificaci n.
+   * @param userId El ID del usuario que agrega la receta a sus favoritos.
+   * @param recipeId El ID de la receta a agregar.
+   * @returns El favorito agregado.
+   */
   async addFavorite(userId: string, recipeId: number): Promise<Favorite> {
     const existingFavorite = await this.favoriteRepository.findOne({
       where: { user: { id_user: userId }, recipe: { id_recipe: recipeId } },
@@ -72,6 +83,17 @@ export class FavoritesService {
     return favorite;
   }
 
+  /**
+   * Elimina una receta de los favoritos de un usuario.
+   *
+   * Verifica que la receta exista y pertenezca al usuario antes de eliminarla
+   * de los favoritos. Lanza un error `NotFoundException` si la receta
+   * no se encuentra o no está en los favoritos. Lanza un error
+   * `BadRequestException` si la receta no pertenece al usuario.
+   *
+   * @param userId El ID del usuario que elimina la receta de sus favoritos.
+   * @param recipeId El ID de la receta a eliminar de los favoritos.
+   */
   async removeFavorite(userId: string, recipeId: number): Promise<void> {
     const recipe = await this.recipeRepository.findOne({
       where: { id_recipe: recipeId },
@@ -97,6 +119,15 @@ export class FavoritesService {
     }
   }
 
+  /**
+   * Obtiene las recetas favoritas de un usuario.
+   *
+   * Verifica que el usuario exista antes de obtener las recetas favoritas.
+   * Lanza un error `NotFoundException` si el usuario no existe.
+   *
+   * @param userId El ID del usuario cuyas recetas favoritas se quieren obtener.
+   * @returns Un array de IDs de recetas favoritas del usuario.
+   */
   async getFavorites(userId: string): Promise<any[]> {
     const userExists = await this.userRepository.findOne({
       where: { id_user: userId },

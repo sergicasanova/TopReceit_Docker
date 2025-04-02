@@ -10,6 +10,10 @@ import { IngredientDto } from './ingredient.dto';
 
 @Injectable()
 export class IngredientService {
+  /**
+   * Constructor del servicio
+   * @param ingredientRepository Repositorio de ingredientes
+   */
   constructor(
     @InjectRepository(IngredientEntity)
     private readonly ingredientRepository: Repository<IngredientEntity>,
@@ -25,6 +29,12 @@ export class IngredientService {
     });
   }
 
+  /**
+   * Crea un nuevo ingrediente si no existe.
+   * @param ingredientDto Objeto de transferencia de datos del ingrediente
+   * @returns El ingrediente recién creado
+   * @throws BadRequestException si el ingrediente ya existe
+   */
   async createIngredient(
     ingredientDto: IngredientDto,
   ): Promise<IngredientEntity> {
@@ -52,6 +62,12 @@ export class IngredientService {
     }
   }
 
+  /**
+   * Elimina un ingrediente por su ID.
+   * @param id El ID del ingrediente a eliminar
+   * @returns Una promesa que se resuelve si el ingrediente se elimina correctamente
+   * @throws NotFoundException si el ingrediente no se encuentra
+   */
   async deleteIngredient(id: number): Promise<void> {
     const ingredient = await this.ingredientRepository.findOne({
       where: { id_ingredient: id },
